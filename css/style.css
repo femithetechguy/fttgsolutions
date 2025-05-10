@@ -1,0 +1,431 @@
+:root {
+  --ion-font-family: 'Open Sans', sans-serif;
+  --primary-color: #4a6cf7;
+  --secondary-color: #101820;
+  --accent-color: #00c9a7;
+  --light-color: #f5f5f5;
+  --dark-color: #333;
+}
+
+h1, h2, h3, h4, h5, h6, .heading-font {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.hero-section {
+  background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+  color: white;
+  padding: 4rem 1rem;
+}
+
+.section {
+  padding: 4rem 1rem;
+}
+
+/* Section Dividers - Fading Horizontal Lines */
+.section:not(:first-of-type) {
+  position: relative;
+}
+
+.section:not(:first-of-type)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(to right,
+    rgba(0,0,0,0),
+    rgba(0,0,0,0.1) 20%,
+    rgba(0,0,0,0.1) 80%,
+    rgba(0,0,0,0)
+  );
+}
+
+/* Light background sections - slightly darker line */
+.section:not(:first-of-type)[style*="background-color: var(--light-color)"]::before {
+  background: linear-gradient(to right,
+    rgba(0,0,0,0),
+    rgba(0,0,0,0.15) 20%,
+    rgba(0,0,0,0.15) 80%,
+    rgba(0,0,0,0)
+  );
+}
+
+/* Animated fade-in for section dividers */
+@media (min-width: 768px) {
+  .section:not(:first-of-type)::before {
+    animation: fadeInLine 1.5s ease-out forwards;
+    opacity: 0;
+  }
+  
+  @keyframes fadeInLine {
+    from {
+      opacity: 0;
+      width: 50%;
+      left: 25%;
+      right: 25%;
+    }
+    to {
+      opacity: 1;
+      width: 80%;
+      left: 10%;
+      right: 10%;
+    }
+  }
+}
+
+/* Mobile optimization for divider lines */
+@media (max-width: 768px) {
+  .section:not(:first-of-type)::before {
+    left: 5%;
+    right: 5%;
+  }
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-heading h2 {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.section-heading h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background-color: var(--accent-color);
+}
+
+/* Custom Card Styling */
+ion-card {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: cardEntrance 0.8s ease-out;
+  animation-fill-mode: backwards;
+}
+
+ion-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Entry animation for cards */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply staggered delay to cards */
+ion-col:nth-child(1) ion-card { animation-delay: 0.1s; }
+ion-col:nth-child(2) ion-card { animation-delay: 0.2s; }
+ion-col:nth-child(3) ion-card { animation-delay: 0.3s; }
+ion-col:nth-child(4) ion-card { animation-delay: 0.4s; }
+ion-col:nth-child(5) ion-card { animation-delay: 0.5s; }
+ion-col:nth-child(6) ion-card { animation-delay: 0.6s; }
+
+/* Enhanced hover effect for desktop */
+@media (hover: hover) {
+  ion-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  }
+  
+  /* Icon bounce on hover */
+  ion-card:hover ion-icon {
+    animation: iconBounce 0.6s ease infinite alternate;
+  }
+  
+  /* Title color shift on hover */
+  ion-card:hover ion-card-title {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+  }
+}
+
+/* Icon bounce animation */
+@keyframes iconBounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+/* Pulse animation for card icons */
+ion-card ion-icon {
+  transition: all 0.3s ease;
+}
+
+/* Focus effect for accessibility */
+ion-card:focus {
+  outline: 2px solid var(--primary-color);
+  transform: translateY(-5px);
+}
+
+/* Card image zoom effect */
+ion-card img {
+  transition: transform 0.5s ease;
+  width: 100%;
+  object-fit: cover;
+}
+
+@media (hover: hover) {
+  ion-card:hover img {
+    transform: scale(1.05);
+  }
+}
+
+/* For touch devices - active state animation */
+@media (hover: none) {
+  ion-card:active {
+    transform: scale(0.98);
+    background-color: rgba(0,0,0,0.02);
+  }
+}
+
+/* Button Styling */
+ion-button {
+  --border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Custom Navigation */
+ion-header ion-toolbar {
+  --background: rgba(255, 255, 255, 0.9);
+  --border-color: transparent;
+}
+
+ion-menu ion-toolbar {
+  --background: var(--primary-color);
+  --color: white;
+}
+
+/* Footer Styling */
+ion-footer ion-toolbar {
+  --padding-top: 1.5rem;
+  --padding-bottom: 1.5rem;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  /* Improve mobile spacing */
+  .section {
+    padding: 2.5rem 1rem;
+  }
+  
+  /* Adjust card layout for mobile */
+  ion-card {
+    margin: 1rem 0.5rem;
+  }
+  
+  /* Better form inputs on mobile */
+  ion-item {
+    --padding-start: 0;
+  }
+  
+  /* Ensure buttons are touch-friendly */
+  ion-button {
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Improve mobile form spacing */
+  form ion-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Better text readability on mobile */
+  p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  /* Properly sized images on mobile */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Better section headings on mobile */
+  .section-heading {
+    margin-bottom: 2rem;
+  }
+  
+  .section-heading h2 {
+    font-size: 1.8rem;
+  }
+  
+  /* Improve spacing for grid columns on mobile */
+  ion-col {
+    padding: 0.5rem;
+  }
+  
+  ion-footer h4, ion-footer h5 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  ion-footer ion-col:first-child h4 {
+    margin-top: 0;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-section {
+    text-align: center;
+    padding: 1.5rem 0.75rem;
+  }
+  
+  /* Stack mobile buttons */
+  .hero-section ion-button {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Smaller section headings on very small screens */
+  .section-heading h2 {
+    font-size: 1.5rem;
+  }
+  
+  /* Adjust for mobile */
+  .copyright {
+    font-size: 0.75rem;
+    padding: 1rem 0.5rem;
+  }
+  
+  .crafted-by {
+    display: block;
+    margin-top: 0.5rem;
+    margin-left: 0;
+  }
+}
+
+/* Touch-friendly improvements for all screen sizes */
+@media (hover: none) {
+  /* Larger touch targets for nav */
+  ion-button, ion-item {
+    --min-height: 50px;
+  }
+  
+  /* Remove hover effects that don't work on touch devices */
+  ion-card:hover {
+    transform: none;
+  }
+  
+  /* Add active state styling instead */
+  ion-card:active {
+    transform: scale(0.98);
+  }
+  
+  /* Add breathing animation for mobile cards */
+  ion-card {
+    animation: cardEntrance 0.8s ease-out, cardPulse 3s ease-in-out infinite alternate;
+    animation-fill-mode: backwards, forwards;
+  }
+  
+  /* Add subtle glow to icons */
+  ion-card ion-icon {
+    animation: iconGlow 2s ease-in-out infinite alternate;
+  }
+}
+
+/* Copyright section */
+.copyright {
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--dark-color);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.crafted-by {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.crafted-by i {
+  color: #e25555;
+  margin: 0 0.3rem;
+  animation: heartbeat 1.5s ease infinite;
+}
+
+.crafted-by a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.crafted-by a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Heartbeat animation */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.3); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.3); }
+  70% { transform: scale(1); }
+}
+
+/* Mobile card animations */
+@keyframes cardPulse {
+  from {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  to {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  }
+}
+
+@keyframes iconGlow {
+  from {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-color);
+  }
+  to {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+  }
+}
