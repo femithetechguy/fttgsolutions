@@ -211,41 +211,47 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12" size-md="4">
-                <ion-card>
-                  <img src="project1.jpg" alt="Project 1" />
+                <ion-card id="project-one" class="clickable-card">
+                  <img src="project1.jpg" alt="Project 1">
                   <ion-card-header>
                     <ion-card-title>Project One</ion-card-title>
                     <ion-card-subtitle>Web Development</ion-card-subtitle>
                   </ion-card-header>
                   <ion-card-content>
-                    A responsive e-commerce platform with integrated payment
-                    processing.
+                    A responsive e-commerce platform with integrated payment processing.
+                    <div class="card-cta">
+                      <ion-icon name="eye-outline"></ion-icon> Click to preview
+                    </div>
                   </ion-card-content>
                 </ion-card>
               </ion-col>
               <ion-col size="12" size-md="4">
-                <ion-card>
-                  <img src="project2.jpg" alt="Project 2" />
+                <ion-card id="project-two" class="clickable-card">
+                  <img src="project2.jpg" alt="Project 2">
                   <ion-card-header>
                     <ion-card-title>Project Two</ion-card-title>
                     <ion-card-subtitle>Data Visualization</ion-card-subtitle>
                   </ion-card-header>
                   <ion-card-content>
-                    Interactive dashboards for a healthcare provider to track
-                    patient outcomes.
+                    Interactive dashboards for a healthcare provider to track patient outcomes.
+                    <div class="card-cta">
+                      <ion-icon name="eye-outline"></ion-icon> Click to preview
+                    </div>
                   </ion-card-content>
                 </ion-card>
               </ion-col>
               <ion-col size="12" size-md="4">
-                <ion-card>
+                <ion-card id="project-three" class="clickable-card">
                   <img src="project3.jpg" alt="Project 3" />
                   <ion-card-header>
                     <ion-card-title>Project Three</ion-card-title>
                     <ion-card-subtitle>Mobile App</ion-card-subtitle>
                   </ion-card-header>
                   <ion-card-content>
-                    A cross-platform mobile application for inventory
-                    management.
+                    A cross-platform mobile application for inventory management.
+                    <div class="card-cta">
+                      <ion-icon name="eye-outline"></ion-icon> Click to preview
+                    </div>
                   </ion-card-content>
                 </ion-card>
               </ion-col>
@@ -503,5 +509,6 @@
         </ion-footer>
       </ion-content>
     </ion-app>
+    <script src="js/app.js"></script>
   </body>
 </html>
