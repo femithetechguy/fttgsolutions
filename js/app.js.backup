@@ -170,37 +170,6 @@ function renderHome(page) {
     <section class="bg-white py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Our Recent Work</h2>
-          <p class="text-gray-600 text-lg">Showcasing the projects we're proud of</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          ${appData && appData.pages && appData.pages.portfolio && appData.pages.portfolio.categories ? 
-            appData.pages.portfolio.categories
-              .flatMap(cat => cat.projects.map(p => ({...p, category: cat.name})))
-              .slice(0, 2)
-              .map(p => `
-                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all border border-gray-100">
-                  <div class="bg-gradient-to-r from-blue-600 to-cyan-400 h-40 flex items-center justify-center">
-                    <i class="${p.icon} text-white" style="font-size: 56px;"></i>
-                  </div>
-                  <div class="p-6">
-                    <div class="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold mb-2">${p.category}</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">${p.title}</h3>
-                    <p class="text-gray-600 text-sm mb-4">${p.description}</p>
-                    <button onclick="openProjectModal('${p.link}', '${p.title}')" class="text-blue-600 hover:text-blue-700 font-semibold text-sm cursor-pointer">View Project →</button>
-                  </div>
-                </div>
-              `).join('')
-            : ''}
-        </div>
-        <div class="text-center">
-          <a href="#portfolio" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all">View All Projects →</a>
-        </div>
-      </div>
-    </section>
-    <section class="bg-white py-12 md:py-20">
-      <div class="max-w-6xl mx-auto px-4">
-        <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">${services.title}</h2>
           <p class="text-gray-600 text-lg">${services.subtitle}</p>
         </div>
@@ -246,14 +215,14 @@ function renderServices(page) {
   return `
     <section class="bg-white py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4">
-        <div class="text-center mb-0">
+        <div class="text-center mb-16">
           <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Services</h1>
           <p class="text-gray-600 text-lg">Comprehensive solutions tailored to your needs</p>
         </div>
       </div>
     </section>
-    ${page.categories.map((cat, idx) => `
-      <section class="${idx === 0 ? '-mt-8 md:-mt-12' : ''} py-0 md:py-0 ${page.categories.indexOf(cat) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">>
+    ${page.categories.map(cat => `
+      <section class="py-16 md:py-24 ${page.categories.indexOf(cat) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
         <div class="max-w-6xl mx-auto px-4">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">${cat.name}</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -357,7 +326,7 @@ function renderPortfolio(page) {
                 <div class="flex flex-wrap gap-2 mb-6">
                   ${p.technologies.map(t => `<span class="bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-sm font-semibold">${t}</span>`).join('')}
                 </div>
-                <button onclick="openProjectModal('${p.link}', '${p.title}')" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all cursor-pointer">View Project →</button>
+                <a href="${p.link}" target="_blank" rel="noopener" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all">View Project →</a>
               </div>
             </div>
           `).join('')}
@@ -512,39 +481,18 @@ function renderContact(page) {
       <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Contact Form -->
         <form class="bg-gray-50 rounded-lg p-8" id="contactForm">
-          ${(() => {
-            const allServices = [];
-            if (appData && appData.pages && appData.pages.services && appData.pages.services.categories) {
-              appData.pages.services.categories.forEach(cat => {
-                cat.services.forEach(svc => {
-                  allServices.push(svc.title);
-                });
-              });
-            }
-            return page.form.fields.map(field => {
-              if (field.name === 'subject') {
-                return `<div class="mb-6">
-                  <label for="${field.name}" class="block text-gray-900 font-semibold mb-2">${field.label}</label>
-                  <select id="${field.name}" name="${field.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" ${field.required ? 'required' : ''}>
-                    <option value="">-- Select a Service --</option>
-                    ${allServices.map(svc => `<option value="${svc}">${svc}</option>`).join('')}
-                    <option value="__custom">+ Add Custom Service</option>
-                  </select>
-                  <input type="text" id="customSubject" placeholder="Enter custom service..." class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 hidden" />
-                </div>`;
-              }
-              if (field.type === 'textarea') {
-                return `<div class="mb-6">
-                  <label for="${field.name}" class="block text-gray-900 font-semibold mb-2">${field.label}</label>
-                  <textarea id="${field.name}" name="${field.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" rows="5" ${field.required ? 'required' : ''}></textarea>
-                </div>`;
-              }
+          ${page.form.fields.map(field => {
+            if (field.type === 'textarea') {
               return `<div class="mb-6">
                 <label for="${field.name}" class="block text-gray-900 font-semibold mb-2">${field.label}</label>
-                <input type="${field.type}" id="${field.name}" name="${field.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" ${field.required ? 'required' : ''}>
+                <textarea id="${field.name}" name="${field.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" rows="5" ${field.required ? 'required' : ''}></textarea>
               </div>`;
-            }).join('');
-          })()}
+            }
+            return `<div class="mb-6">
+              <label for="${field.name}" class="block text-gray-900 font-semibold mb-2">${field.label}</label>
+              <input type="${field.type}" id="${field.name}" name="${field.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" ${field.required ? 'required' : ''}>
+            </div>`;
+          }).join('')}
           <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold uppercase tracking-wider transition-all">${page.form.button.text}</button>
         </form>
         
@@ -635,51 +583,9 @@ function route(data) {
   if (hash === 'about') {
     setupServiceDropdown();
   }
-  if (hash === 'contact') {
-    setupContactServiceDropdown();
-  }
   
   // Smooth scroll to top
   window.scrollTo(0, 0);
-}
-
-function openProjectModal(link, title) {
-  console.log(`🖼️ Opening project modal for: ${title}`);
-  let modal = document.getElementById('projectModal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'projectModal';
-    modal.innerHTML = `
-      <div id="projectModalBackdrop" class="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4" onclick="closeProjectModal(event)">
-        <div class="bg-white rounded-lg w-full max-w-5xl h-[80vh] flex flex-col" onclick="event.stopPropagation()">
-          <div class="flex items-center justify-between p-4 border-b bg-gray-50">
-            <h2 id="projectModalTitle" class="text-xl font-bold text-gray-900"></h2>
-            <button onclick="closeProjectModal()" class="text-gray-900 hover:text-red-600 hover:bg-red-100 p-2 rounded-lg transition-all" title="Close">
-              <i class="bi bi-x text-3xl"></i>
-            </button>
-          </div>
-          <div class="flex-1 overflow-hidden">
-            <iframe id="projectIframe" src="" title="Project Preview" class="w-full h-full border-none" loading="lazy"></iframe>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-  }
-  
-  document.getElementById('projectModalTitle').textContent = title;
-  document.getElementById('projectIframe').src = link;
-  modal.style.display = 'flex';
-}
-
-function closeProjectModal(event) {
-  if (event && event.target.id !== 'projectModalBackdrop') return;
-  const modal = document.getElementById('projectModal');
-  if (modal) {
-    modal.style.display = 'none';
-    document.getElementById('projectIframe').src = '';
-    console.log('🔙 Project modal closed');
-  }
 }
 
 function setupServiceDropdown() {
@@ -723,38 +629,6 @@ function setupServiceDropdown() {
       message.innerHTML = '';
     }, 2000);
   });
-}
-
-function setupContactServiceDropdown() {
-  const dropdown = document.getElementById('subject');
-  const customInput = document.getElementById('customSubject');
-  
-  if (!dropdown) {
-    console.warn('⚠️ Contact subject dropdown not found');
-    return;
-  }
-  
-  dropdown.addEventListener('change', (e) => {
-    console.log(`📋 Contact subject changed: ${e.target.value}`);
-    if (e.target.value === '__custom') {
-      customInput.classList.remove('hidden');
-      customInput.focus();
-    } else {
-      customInput.classList.add('hidden');
-      customInput.value = '';
-    }
-  });
-  
-  // Handle form submission to use custom value if entered
-  const form = document.getElementById('contactForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      if (dropdown.value === '__custom' && customInput.value.trim()) {
-        dropdown.value = customInput.value.trim();
-        console.log(`✅ Contact form submitted with custom subject: ${customInput.value}`);
-      }
-    });
-  }
 }
 
 function setupMobileMenu() {
