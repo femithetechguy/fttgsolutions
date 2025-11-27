@@ -9,6 +9,7 @@
 
 const APP_JSON_PATH = 'json/app.json';
 let appData = null;
+let blogData = null;
 
 async function fetchAppData() {
   try {
@@ -24,6 +25,28 @@ async function fetchAppData() {
     throw e;
   }
 }
+
+async function fetchBlogData() {
+  try {
+    console.log('📥 Fetching blog data from: json/blog.json');
+    const res = await fetch('json/blog.json?t=' + Date.now());
+    if (!res.ok) throw new Error('Failed to load blog.json');
+    const data = await res.json();
+    console.log('✅ Blog data loaded successfully');
+    return data;
+  } catch (e) {
+    console.error('❌ Error loading blog data:', e);
+    return { posts: [] };
+  }
+}
+
+// ============================================================================
+// SECTION 1B: FORM SERVICE
+// ============================================================================
+
+// FormService is loaded separately from js/services/FormService.js
+// Handles form submission and sends data to backend API
+let formService = null;
 
 // ============================================================================
 // SECTION 2: STYLING & DESIGN SYSTEM
@@ -453,7 +476,10 @@ function renderBlog(page) {
     <section class="py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2">
-          ${page.posts.map(post => `
+          ${page.posts.map(post => {
+            const postId = post.link ? post.link.split('/').pop() : null;
+            console.log(`📰 Blog post: title="${post.title}" link="${post.link}" → id="${postId}"`);
+            return `
             <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all mb-6">
               <img src="${post.image}" alt="${post.title}" class="w-full h-64 object-cover bg-gray-300" onerror="this.style.display='none'">
               <div class="p-6">
@@ -461,18 +487,21 @@ function renderBlog(page) {
                 <h2 class="text-2xl font-bold text-gray-900 mt-3 mb-2">${post.title}</h2>
                 <p class="text-gray-500 text-sm mb-4">${post.date}</p>
                 <p class="text-gray-600 mb-4">${post.excerpt}</p>
-                <a href="${post.link}" class="text-cyan-400 font-semibold hover:text-cyan-500 transition-colors">Read More →</a>
+                <button onclick="openBlogModal('${postId}')" class="text-cyan-400 font-semibold hover:text-cyan-500 transition-colors bg-none border-none cursor-pointer">Read More →</button>
               </div>
             </article>
-          `).join('')}
+          `;
+          }).join('')}
         </div>
         <aside class="space-y-6">
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-lg font-bold text-gray-900 mb-4">Popular Posts</h3>
             <ul class="space-y-3">
-              ${page.sidebar.popularPosts.map(post => `
-                <li><a href="${post.link}" class="text-gray-600 hover:text-cyan-400 transition-colors">${post.title}</a></li>
-              `).join('')}
+              ${page.sidebar.popularPosts.map((post, idx) => {
+                const postId = post.link ? post.link.split('/').pop() : null;
+                console.log(`📌 Popular post ${idx}: link="${post.link}" → id="${postId}"`);
+                return `<li><button onclick="openBlogModal('${postId}')" class="text-gray-600 hover:text-cyan-400 transition-colors bg-none border-none cursor-pointer text-left">${post.title}</button></li>`;
+              }).join('')}
             </ul>
           </div>
           <div class="bg-gray-50 rounded-lg p-6">
@@ -600,6 +629,93 @@ function renderPage(pageName, data) {
   }
 }
 
+function openBlogModal(postId) {
+  console.log(`📖 Opening blog modal for post: ${postId}`);
+  
+  if (!blogData || !blogData.posts) {
+    console.error('❌ Blog data not loaded');
+    return;
+  }
+  
+  const post = blogData.posts.find(p => p.id === postId);
+  if (!post) {
+    console.error(`❌ Blog post not found: ${postId}`);
+    return;
+  }
+  
+  // Create or reuse modal
+  let blogModal = document.getElementById('blogModal');
+  if (!blogModal) {
+    blogModal = document.createElement('div');
+    blogModal.id = 'blogModal';
+    document.body.appendChild(blogModal);
+  }
+  
+  // Parse markdown content (simple converter)
+  const parseMarkdown = (md) => {
+    return md
+      .replace(/^### (.*?)$/gm, '<h3 class="text-lg font-bold text-gray-900 mt-4 mb-2">$1</h3>')
+      .replace(/^## (.*?)$/gm, '<h2 class="text-2xl font-bold text-gray-900 mt-6 mb-3">$1</h2>')
+      .replace(/^# (.*?)$/gm, '<h1 class="text-3xl font-bold text-gray-900 mb-4">$1</h1>')
+      .replace(/^\- (.*?)$/gm, '<li class="ml-4 text-gray-700">$1</li>')
+      .replace(/(\r\n|\n|\r){2,}/gm, '</p><p class="text-gray-700 mb-4">')
+      .replace(/\*\*(.*?)\*\*/gm, '<strong class="font-bold">$1</strong>');
+  };
+  
+  // Set modal content
+  blogModal.innerHTML = `
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onclick="if(event.target === this) closeBlogModal()">
+      <div class="bg-white rounded-lg w-[95vw] h-[90vh] flex flex-col overflow-hidden">
+        <div class="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-start flex-shrink-0">
+          <div class="flex-1 pr-4">
+            <span class="bg-cyan-400 text-white px-3 py-1 rounded-full text-sm font-semibold">${post.category}</span>
+            <h1 class="text-3xl font-bold text-gray-900 mt-3 mb-2">${post.title}</h1>
+            <p class="text-gray-500 text-sm">${post.date} · ${post.readTime}</p>
+          </div>
+          <button onclick="closeBlogModal()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold flex-shrink-0">×</button>
+        </div>
+        
+        <div class="p-6 overflow-y-auto flex-1">
+          ${post.author ? `
+            <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200">
+              <img src="${post.author.avatar}" alt="${post.author.name}" class="w-12 h-12 rounded-full bg-gray-300 flex-shrink-0" onerror="this.style.display='none'">
+              <div>
+                <p class="font-semibold text-gray-900">${post.author.name}</p>
+                <p class="text-sm text-gray-600">${post.author.bio}</p>
+              </div>
+            </div>
+          ` : ''}
+          
+          <div class="prose prose-sm max-w-none text-gray-700">
+            ${parseMarkdown(post.content)}
+          </div>
+          
+          ${post.tags ? `
+            <div class="mt-6 pt-6 border-t border-gray-200">
+              <div class="flex flex-wrap gap-2">
+                ${post.tags.map(tag => `<span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">${tag}</span>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Prevent body scroll
+  document.body.style.overflow = 'hidden';
+  console.log(`✅ Blog modal opened: ${post.title}`);
+}
+
+function closeBlogModal() {
+  console.log('❌ Closing blog modal');
+  const blogModal = document.getElementById('blogModal');
+  if (blogModal) {
+    blogModal.remove();
+  }
+  document.body.style.overflow = 'auto';
+}
+
 // ============================================================================
 // SECTION 6: ROUTING & APP INITIALIZATION
 // ============================================================================
@@ -672,8 +788,8 @@ function openProjectModal(link, title) {
     modal.id = 'projectModal';
     modal.innerHTML = `
       <div id="projectModalBackdrop" class="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4" onclick="closeProjectModal(event)">
-        <div class="bg-white rounded-lg w-full max-w-5xl h-[80vh] flex flex-col" onclick="event.stopPropagation()">
-          <div class="flex items-center justify-between p-4 border-b bg-gray-50">
+        <div class="bg-white rounded-lg w-[95vw] h-[90vh] flex flex-col" onclick="event.stopPropagation()">
+          <div class="flex items-center justify-between p-4 border-b bg-gray-50 flex-shrink-0">
             <h2 id="projectModalTitle" class="text-xl font-bold text-gray-900"></h2>
             <button onclick="closeProjectModal()" class="text-gray-900 hover:text-red-600 hover:bg-red-100 p-2 rounded-lg transition-all" title="Close">
               <i class="bi bi-x text-3xl"></i>
@@ -753,38 +869,6 @@ function setupServiceDropdown() {
   });
 }
 
-function setupContactServiceDropdown() {
-  const dropdown = document.getElementById('subject');
-  const customInput = document.getElementById('customSubject');
-  
-  if (!dropdown) {
-    console.warn('⚠️ Contact subject dropdown not found');
-    return;
-  }
-  
-  dropdown.addEventListener('change', (e) => {
-    console.log(`📋 Contact subject changed: ${e.target.value}`);
-    if (e.target.value === '__custom') {
-      customInput.classList.remove('hidden');
-      customInput.focus();
-    } else {
-      customInput.classList.add('hidden');
-      customInput.value = '';
-    }
-  });
-  
-  // Handle form submission to use custom value if entered
-  const form = document.getElementById('contactForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      if (dropdown.value === '__custom' && customInput.value.trim()) {
-        dropdown.value = customInput.value.trim();
-        console.log(`✅ Contact form submitted with custom subject: ${customInput.value}`);
-      }
-    });
-  }
-}
-
 function setupMobileMenu() {
   const menuToggle = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
@@ -855,6 +939,7 @@ function setupMobileMenu() {
 async function initApp() {
   console.log('🚀 App initializing...');
   appData = await fetchAppData();
+  blogData = await fetchBlogData();
   appDataHash = JSON.stringify(appData);
   console.log('🎨 Applying design system...');
   setCSSVars(appData.design.colors);
@@ -871,6 +956,20 @@ async function initApp() {
   }
   
   route(appData);
+  
+  // Initialize FormService if FormService class is available
+  if (typeof FormService !== 'undefined') {
+    formService = new FormService({
+      formSelector: '#contactForm',
+      apiEndpoint: '/api/send-email'  // Update this to your backend endpoint
+    });
+    
+    // Initialize form service
+    await formService.init();
+    console.log('✅ FormService initialized');
+  } else {
+    console.warn('⚠️ FormService class not found. Make sure FormService.js is loaded.');
+  }
   
   // Listen for popstate (browser back/forward)
   window.addEventListener('popstate', () => {
