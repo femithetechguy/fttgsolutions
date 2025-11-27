@@ -2,6 +2,7 @@
   "buildCommand": "echo 'Static site - no build needed'",
   "devCommand": "python3 -m http.server 3000",
   "installCommand": "npm install",
+  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/api/:path*",
