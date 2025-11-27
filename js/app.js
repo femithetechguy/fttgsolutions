@@ -689,6 +689,10 @@ function openProjectModal(link, title) {
   document.getElementById('projectModalTitle').textContent = title;
   document.getElementById('projectIframe').src = link;
   modal.style.display = 'flex';
+  
+  // Prevent body scroll and layout shift when modal opens
+  document.body.style.overflow = 'hidden';
+  console.log(`📺 Project modal opened for: ${title}`);
 }
 
 function closeProjectModal(event) {
@@ -697,6 +701,9 @@ function closeProjectModal(event) {
   if (modal) {
     modal.style.display = 'none';
     document.getElementById('projectIframe').src = '';
+    
+    // Restore body scroll when modal closes
+    document.body.style.overflow = 'auto';
     console.log('🔙 Project modal closed');
   }
 }
