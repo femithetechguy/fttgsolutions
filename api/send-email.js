@@ -142,7 +142,7 @@ module.exports = async (req, res) => {
 
     // Send email to business
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: `FTTG Solutions <dev@fttgsolutions.com>`,
       to: 'dev@fttgsolutions.com',
       replyTo: data.email,
       subject: `New Contact: ${data.subject}`,
@@ -151,13 +151,13 @@ module.exports = async (req, res) => {
 
     console.log('✅ Email sent successfully to dev@fttgsolutions.com');
 
-    // Optional: Send confirmation email to user
-    try {
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: data.email,
-        subject: 'We received your message - FTTG Solutions',
-        html: `
+    // Send confirmation email to user asynchronously (don't wait)
+    // This allows the response to return quickly while email sends in background
+    transporter.sendMail({
+      from: `FTTG Solutions <dev@fttgsolutions.com>`,
+      to: data.email,
+      subject: 'We received your message - FTTG Solutions',
+      html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #0891b2;">Thank you for contacting FTTG Solutions!</h2>
             <p>Hi ${sanitizeHtml(data.name)},</p>
@@ -174,12 +174,12 @@ module.exports = async (req, res) => {
             </p>
           </div>
         `
-      });
-      console.log('✅ Confirmation email sent to', data.email);
-    } catch (confirmError) {
-      console.warn('⚠️ Failed to send confirmation email:', confirmError.message);
-      // Don't fail the request if confirmation email fails
-    }
+    }).catch(err => {
+      // Log error but don't break the main response
+      console.warn('⚠️ Failed to send confirmation email:', err.message);
+    });
+
+    console.log('📨 Confirmation email queued (sending in background)');
 
     // Return success response
     return res.status(200).json({
