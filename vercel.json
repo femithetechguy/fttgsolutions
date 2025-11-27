@@ -1,12 +1,15 @@
 {
-  "buildCommand": "echo 'Static site - no build needed'",
+  "buildCommand": "mkdir -p .vercel/output/static && cp -r public/* .vercel/output/static/",
   "devCommand": "python3 -m http.server 3000",
   "installCommand": "npm install",
-  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
