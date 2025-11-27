@@ -422,20 +422,6 @@ function renderAbout(page) {
         </div>
       </div>
     </section>
-    <section class="bg-blue-50 py-12 md:py-20">
-      <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Our Values</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          ${page.values.map(v => `
-            <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition-all">
-              <i class="bi ${v.icon} text-4xl text-cyan-400 mb-4 block"></i>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">${v.title}</h3>
-              <p class="text-gray-600">${v.description}</p>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </section>
     <section class="bg-gray-50 py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Our Team</h2>
@@ -446,6 +432,20 @@ function renderAbout(page) {
               <h3 class="text-2xl font-bold text-gray-900 mb-2">${m.name}</h3>
               <p class="text-cyan-400 font-semibold mb-4 text-lg">${m.role}</p>
               <p class="text-gray-600 text-base">${m.bio}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </section>
+    <section class="bg-blue-50 py-12 md:py-20">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Our Values</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          ${page.values.map(v => `
+            <div class="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition-all">
+              <i class="bi ${v.icon} text-4xl text-cyan-400 mb-4 block"></i>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">${v.title}</h3>
+              <p class="text-gray-600">${v.description}</p>
             </div>
           `).join('')}
         </div>
