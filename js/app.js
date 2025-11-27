@@ -53,7 +53,7 @@ function setFonts(fonts) {
 function renderHeader(header) {
   return `<header class="bg-gradient-to-r from-blue-600 to-cyan-400 text-white sticky top-0 z-50 shadow-lg">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="#home" class="logo flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition-opacity">
+      <a href="/" class="logo flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition-opacity" onclick="navigate('/', event)">
         <span class="text-white font-bold text-lg">FTTG Solutions</span>
       </a>
       <button class="menu-toggle md:hidden flex flex-col gap-1.5 bg-transparent border-none cursor-pointer" id="menuToggle">
@@ -63,16 +63,14 @@ function renderHeader(header) {
       </button>
       <nav class="hidden md:flex gap-8 items-center" id="navMenu">
         ${header.menu.map(item => {
-          const href = item.url === '/' ? '#home' : `#${item.url.replace('/', '')}`;
-          return `<a href="${href}" class="menu-link hover:text-cyan-300 transition-colors">${item.label}</a>`;
+          return `<a href="${item.url}" class="menu-link hover:text-cyan-300 transition-colors" onclick="navigate('${item.url}', event)">${item.label}</a>`;
         }).join('')}
       </nav>
-      ${header.cta_enabled ? `<a href="#${header.cta_url.replace('/', '')}" class="hidden md:inline-block bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-2 rounded font-semibold transition-all">${header.cta_text}</a>` : ''}
+      ${header.cta_enabled ? `<a href="${header.cta_url}" class="hidden md:inline-block bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-2 rounded font-semibold transition-all" onclick="navigate('${header.cta_url}', event)">${header.cta_text}</a>` : ''}
     </div>
     <nav class="hidden flex-col gap-0 bg-transparent max-h-0 overflow-hidden transition-all duration-300 pointer-events-none" id="mobileMenu">
       ${header.menu.map(item => {
-        const href = item.url === '/' ? '#home' : `#${item.url.replace('/', '')}`;
-        return `<a href="${href}" class="menu-link block px-4 py-3 border-b border-white/30 hover:bg-white/10 transition-colors text-right pointer-events-auto">${item.label}</a>`;
+        return `<a href="${item.url}" class="menu-link block px-4 py-3 border-b border-white/30 hover:bg-white/10 transition-colors text-right pointer-events-auto" onclick="navigate('${item.url}', event)">${item.label}</a>`;
       }).join('')}
     </nav>
   </header>`;
@@ -92,7 +90,7 @@ function renderFooter(footer) {
         <div>
           <h4 class="text-lg font-bold mb-4 pb-2 border-b border-gray-700">Quick Links</h4>
           <ul class="space-y-2">
-            ${footer.quick_links.map(link => `<li><a href="${link.url}" class="text-gray-400 hover:text-cyan-400 transition-colors">${link.label}</a></li>`).join('')}
+            ${footer.quick_links.map(link => `<li><a href="${link.url}" class="text-gray-400 hover:text-cyan-400 transition-colors" onclick="navigate('${link.url}', event)">${link.label}</a></li>`).join('')}
           </ul>
         </div>
         
@@ -100,7 +98,7 @@ function renderFooter(footer) {
         <div>
           <h4 class="text-lg font-bold mb-4 pb-2 border-b border-gray-700">Company</h4>
           <ul class="space-y-2">
-            ${footer.company_links.map(link => `<li><a href="${link.url}" class="text-gray-400 hover:text-cyan-400 transition-colors">${link.label}</a></li>`).join('')}
+            ${footer.company_links.map(link => `<li><a href="${link.url}" class="text-gray-400 hover:text-cyan-400 transition-colors" onclick="navigate('${link.url}', event)">${link.label}</a></li>`).join('')}
           </ul>
         </div>
         
@@ -144,8 +142,8 @@ function renderHome(page) {
           <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">${hero.title}</h1>
           <p class="text-lg md:text-xl opacity-95 mb-8 leading-relaxed">${hero.subtitle}</p>
           <div class="flex flex-col sm:flex-row gap-4">
-            <a href="#contact" class="bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-3 rounded font-semibold transition-all inline-block text-center">${hero.button_text}</a>
-            <a href="#services" class="border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded font-semibold transition-all inline-block text-center">Learn More</a>
+            <a href="/contact" class="bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-3 rounded font-semibold transition-all inline-block text-center" onclick="navigate('/contact', event)">${hero.button_text}</a>
+            <a href="/services" class="border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded font-semibold transition-all inline-block text-center" onclick="navigate('/services', event)">Learn More</a>
           </div>
         </div>
         <div class="hidden md:block"></div>
@@ -192,7 +190,7 @@ function renderHome(page) {
             : ''}
         </div>
         <div class="text-center">
-          <a href="#portfolio" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all">View All Projects →</a>
+          <a href="/portfolio" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all" onclick="navigate('/portfolio', event)">View All Projects →</a>
         </div>
       </div>
     </section>
@@ -234,7 +232,7 @@ function renderHome(page) {
     <section class="bg-gradient-to-br from-gray-100 to-blue-50 py-12 md:py-20">
       <div class="max-w-2xl mx-auto px-4 text-center">
         <p class="text-2xl font-semibold text-gray-900 mb-6">${page.cta.text}</p>
-        <a href="#contact" class="bg-cyan-400 hover:bg-cyan-500 text-white px-8 py-4 rounded font-semibold transition-all inline-block">${page.cta.button_text}</a>
+        <a href="/contact" class="bg-cyan-400 hover:bg-cyan-500 text-white px-8 py-4 rounded font-semibold transition-all inline-block" onclick="navigate('/contact', event)">${page.cta.button_text}</a>
       </div>
     </section>
   `;
@@ -606,28 +604,53 @@ function renderPage(pageName, data) {
 // SECTION 6: ROUTING & APP INITIALIZATION
 // ============================================================================
 
+function navigate(path, event) {
+  // Prevent default link behavior
+  if (event) event.preventDefault();
+  
+  // Normalize path
+  const normalizedPath = path === '/' ? '/' : `/${path.replace(/^\//, '')}`;
+  
+  console.log(`🔀 Navigate called: ${path} → ${normalizedPath}`);
+  
+  // Only navigate if it's a different path
+  if (window.location.pathname === normalizedPath) {
+    console.log(`ℹ️ Already on this page, skipping navigation`);
+    return;
+  }
+  
+  // Update browser history and navigate
+  console.log(`📍 Pushing state to history: ${normalizedPath}`);
+  window.history.pushState({ path: normalizedPath }, '', normalizedPath);
+  route(appData);
+}
+
 function route(data) {
-  const hash = window.location.hash.replace('#', '') || 'home';
-  console.log(`🔗 Navigating to: #${hash}`);
+  // Get page from URL path (clean URLs)
+  let path = window.location.pathname;
+  // Remove leading/trailing slashes and get the page name
+  let page = path.replace(/^\/|\/$/g, '') || 'home';
+  
+  console.log(`🔗 Navigating to: /${page}`);
   const main = document.getElementById('app');
   try {
     main.innerHTML =
       renderHeader(data.global_components.header) +
-      `<main class="main-content">${renderPage(hash, data)}</main>` +
+      `<main class="main-content">${renderPage(page, data)}</main>` +
       renderFooter(data.global_components.footer);
-    console.log(`📄 Page rendered: ${hash}`);
+    console.log(`📄 Page rendered: ${page}`);
   } catch (e) {
-    console.error(`❌ Error rendering page '${hash}':`, e);
+    console.error(`❌ Error rendering page '${page}':`, e);
   }
   
   // Add mobile menu toggle
   setupMobileMenu();
   
   // Setup page-specific features
-  if (hash === 'about') {
+  if (page === 'about') {
     setupServiceDropdown();
   }
-  if (hash === 'contact') {
+  if (page === 'contact') {
     setupContactServiceDropdown();
   }
   
@@ -788,8 +811,20 @@ async function initApp() {
   setCSSVars(appData.design.colors);
   setFonts(appData.design.fonts);
   console.log('📍 Setting up routing...');
+  
+  // Handle 404.html redirect for clean URLs
+  if (sessionStorage.redirect) {
+    console.log('📡 Processing 404.html redirect...');
+    delete sessionStorage.redirect;
+  }
+  
   route(appData);
-  window.onhashchange = () => route(appData);
+  
+  // Listen for popstate (browser back/forward)
+  window.addEventListener('popstate', () => {
+    console.log('⏪ Browser back/forward button triggered');
+    route(appData);
+  });
   console.log('✅ App initialization complete');
 }
 
