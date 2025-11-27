@@ -768,9 +768,6 @@ function route(data) {
   if (page === 'about') {
     setupServiceDropdown();
   }
-  if (page === 'contact') {
-    setupContactServiceDropdown();
-  }
   
   // Smooth scroll to top
   window.scrollTo(0, 0);
