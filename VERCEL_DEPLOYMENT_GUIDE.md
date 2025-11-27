@@ -1,4 +1,4 @@
-# Vercel Deployment Guide - Step by Step
+# Vercel Deployment Guide - Steps by Steps
 
 ## Step 1: Prepare Your Repository ✅ (Already Done)
 
