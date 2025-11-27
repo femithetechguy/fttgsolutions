@@ -74,9 +74,8 @@
         "button_text": "Subscribe"
       },
       "social": [
-        { "icon": "bi-facebook", "url": "https://facebook.com" },
-        { "icon": "bi-instagram", "url": "https://instagram.com" },
-        { "icon": "bi-linkedin", "url": "https://linkedin.com" }
+        { "icon": "bi-twitter", "url": "https://twitter.com/fttgsolutions" },
+        { "icon": "bi-instagram", "url": "https://instagram.com/fttgsolutions" }
       ]
     }
   },
@@ -269,27 +268,37 @@
         }
       ],
       "process": {
-        "title": "Our Approach",
+        "title": "Our Process",
         "steps": [
           {
             "number": "01",
-            "title": "Understand",
-            "description": "We start by understanding your business needs."
+            "title": "Discovery",
+            "description": "Understanding your business needs and objectives."
           },
           {
             "number": "02",
-            "title": "Plan",
-            "description": "We create a detailed roadmap for implementation."
+            "title": "Planning",
+            "description": "Developing a strategic solution blueprint."
           },
           {
             "number": "03",
-            "title": "Execute",
-            "description": "We develop and implement the solution with precision."
+            "title": "Development",
+            "description": "Building your solution with cutting-edge technology."
           },
           {
             "number": "04",
-            "title": "Deliver",
-            "description": "We ensure smooth deployment and ongoing support."
+            "title": "Testing",
+            "description": "Ensuring quality and reliability."
+          },
+          {
+            "number": "05",
+            "title": "Deployment",
+            "description": "Launching your solution with proper support."
+          },
+          {
+            "number": "06",
+            "title": "Maintenance",
+            "description": "Ongoing support, updates, and optimization."
           }
         ]
       },
@@ -437,6 +446,11 @@
             "number": "05",
             "title": "Deployment",
             "description": "Launching your solution with proper support."
+          },
+          {
+            "number": "06",
+            "title": "Maintenance",
+            "description": "Ongoing support, updates, and optimization."
           }
         ]
       },

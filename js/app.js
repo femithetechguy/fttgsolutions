@@ -1,7 +1,14 @@
-// Modular, responsive, dynamic app - loads all content from json/app.json
+// ============================================================================
+// FTTG Solutions - Dynamic SPA Application
+// Loads all content from json/app.json and renders dynamically
+// ============================================================================
+
+// ============================================================================
+// SECTION 1: DATA FETCHING
+// ============================================================================
+
 const APP_JSON_PATH = 'json/app.json';
 let appData = null;
-let appDataHash = null;
 
 async function fetchAppData() {
   try {
@@ -18,23 +25,9 @@ async function fetchAppData() {
   }
 }
 
-async function checkForDataChanges() {
-  try {
-    const newData = await fetchAppData();
-    const newHash = JSON.stringify(newData);
-    
-    if (appDataHash && newHash !== appDataHash) {
-      console.log('🔄 JSON updated! Reloading app...');
-      appData = newData;
-      appDataHash = newHash;
-      setCSSVars(appData.design.colors);
-      setFonts(appData.design.fonts);
-      route(appData); // Re-render current page
-    }
-  } catch (e) {
-    console.warn('⚠️ Error checking for JSON changes:', e);
-  }
-}
+// ============================================================================
+// SECTION 2: STYLING & DESIGN SYSTEM
+// ============================================================================
 
 function setCSSVars(colors) {
   if (!colors.variables) return;
@@ -52,6 +45,10 @@ function setFonts(fonts) {
   document.documentElement.style.setProperty('--font-primary', `'${fonts.primary}'`);
   document.documentElement.style.setProperty('--font-secondary', `'${fonts.secondary}'`);
 }
+
+// ============================================================================
+// SECTION 3: LAYOUT COMPONENTS (Header & Footer)
+// ============================================================================
 
 function renderHeader(header) {
   return `<header class="bg-gradient-to-r from-blue-600 to-cyan-400 text-white sticky top-0 z-50 shadow-lg">
@@ -131,6 +128,10 @@ function renderFooter(footer) {
     </div>
   </footer>`;
 }
+
+// ============================================================================
+// SECTION 4: PAGE RENDERING FUNCTIONS
+// ============================================================================
 
 function renderHome(page) {
   const hero = page.hero;
@@ -384,18 +385,26 @@ function renderAbout(page) {
       <p class="text-lg md:text-xl opacity-90 mt-4">${page.hero.subtitle}</p>
     </section>
     <section class="py-12 md:py-20">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">${page.intro.title}</h2>
-        <p class="text-gray-600 text-lg leading-relaxed">${page.intro.description}</p>
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div class="flex items-start gap-6">
+            <i class="bi bi-building text-5xl text-blue-600 flex-shrink-0 mt-2"></i>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">${page.intro.title}</h2>
+              <p class="text-gray-600 text-lg leading-relaxed">${page.intro.description}</p>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <i class="bi bi-target text-5xl text-cyan-400"></i>
+              <h2 class="text-3xl font-bold text-gray-900">Our Mission</h2>
+            </div>
+            <p class="text-gray-600 text-lg leading-relaxed">${page.mission}</p>
+          </div>
+        </div>
       </div>
     </section>
-    <section class="bg-gray-50 py-12 md:py-20">
-      <div class="max-w-4xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
-        <p class="text-gray-600 text-lg leading-relaxed">${page.mission}</p>
-      </div>
-    </section>
-    <section class="py-12 md:py-20">
+    <section class="bg-blue-50 py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Our Values</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -427,7 +436,7 @@ function renderAbout(page) {
     <section class="py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4 text-center">
         <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">${page.process.title}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
           ${page.process.steps.map(step => `
             <div class="bg-blue-50 rounded-lg p-6">
               <div class="text-3xl font-bold text-cyan-400 mb-3">${step.number}</div>
@@ -596,6 +605,10 @@ function renderPage(pageName, data) {
   }
 }
 
+// ============================================================================
+// SECTION 6: ROUTING & APP INITIALIZATION
+// ============================================================================
+
 function route(data) {
   const hash = window.location.hash.replace('#', '') || 'home';
   console.log(`🔗 Navigating to: #${hash}`);
@@ -624,6 +637,10 @@ function route(data) {
   // Smooth scroll to top
   window.scrollTo(0, 0);
 }
+
+// ============================================================================
+// SECTION 5: EVENT HANDLERS & INTERACTIVE FEATURES
+// ============================================================================
 
 function openProjectModal(link, title) {
   console.log(`🖼️ Opening project modal for: ${title}`);
@@ -776,11 +793,11 @@ async function initApp() {
   console.log('📍 Setting up routing...');
   route(appData);
   window.onhashchange = () => route(appData);
-  
-  console.log('⏱️ Starting JSON change detector (500ms interval)');
-  // Check for JSON changes every 500ms
-  setInterval(checkForDataChanges, 500);
   console.log('✅ App initialization complete');
 }
+
+// ============================================================================
+// APPLICATION BOOTSTRAP
+// ============================================================================
 
 document.addEventListener('DOMContentLoaded', initApp);
