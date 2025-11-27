@@ -2,18 +2,10 @@
   "buildCommand": "echo 'Static site - no build needed'",
   "devCommand": "python3 -m http.server 3000",
   "installCommand": "npm install",
-  "name": "fttg-solutions",
-  "projectSettings": {
-    "sourceFilesOutsideRootDirectory": false
-  },
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     }
-  ],
-  "env": {
-    "EMAIL_USER": "@EMAIL_USER",
-    "EMAIL_PASSWORD": "@EMAIL_PASSWORD"
-  }
+  ]
 }
