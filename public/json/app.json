@@ -1,0 +1,601 @@
+{
+  "design": {
+    "colors": {
+      "primary": "#1A1A1A",
+      "secondary": "#5B6AFF",
+      "accent": "#00CED0",
+      "background": "#FFFFFF",
+      "text_dark": "#111111",
+      "text_light": "#F5F5F5",
+      "variables": {
+        "--brand-primary": "#5B6AFF",
+        "--brand-accent": "#00CED0"
+      }
+    },
+    "fonts": {
+      "primary": "Inter",
+      "secondary": "Poppins"
+    },
+    "style": [
+      {
+        "primary": "Buttons, CTAs, Highlights"
+      },
+      {
+        "secondary": "Links, Icons, Hover Effects"
+      },
+      {
+        "accent": "Section headers, badges"
+      },
+      {
+        "text_dark": "Headings, body text"
+      },
+      {
+        "text_light": "Light text on dark backgrounds"
+      }
+    ]
+  },
+  "features": {
+    "contact_form": true,
+    "newsletter": false,
+    "dark_mode": true
+  },
+  "global_components": {
+    "header": {
+      "logo": "",
+      "cta_enabled": true,
+      "cta_text": "Get a Quote",
+      "cta_url": "/contact",
+      "menu": [
+        { "label": "Home", "url": "/" },
+        { "label": "Services", "url": "/services" },
+        { "label": "Portfolio", "url": "/portfolio" },
+        { "label": "About", "url": "/about" },
+        { "label": "Blog", "url": "/blog" },
+        { "label": "Contact", "url": "/contact" }
+      ]
+    },
+    "footer": {
+      "tagline": "Innovative software solutions for modern businesses",
+      "copyright": "© 2025 FTTG Solutions. All Rights Reserved.",
+      "quick_links": [
+        { "label": "Home", "url": "/" },
+        { "label": "Services", "url": "/services" },
+        { "label": "Portfolio", "url": "/portfolio" }
+      ],
+      "company_links": [
+        { "label": "About", "url": "/about" },
+        { "label": "Blog", "url": "/blog" },
+        { "label": "Contact", "url": "/contact" }
+      ],
+      "newsletter": {
+        "title": "Newsletter",
+        "description": "Subscribe to receive updates and insights",
+        "placeholder": "Your Email",
+        "button_text": "Subscribe"
+      },
+      "social": [
+        { "icon": "bi-twitter", "url": "https://twitter.com/fttgsolutions" },
+        { "icon": "bi-instagram", "url": "https://instagram.com/fttgsolutions" }
+      ]
+    }
+  },
+  "pages": {
+    "home": {
+      "seo": {
+        "title": "FTTG Solutions - Digital Transformation & Tech Consulting",
+        "description": "We deliver digital solutions that scale."
+      },
+      "hero": {
+        "title": "Powering Business Innovation",
+        "subtitle": "Tech solutions that accelerate growth.",
+        "button_text": "Start Your Project",
+        "button_url": "/contact"
+      },
+      "sections": {
+        "features": [
+          {
+            "icon": "bi-lightning-charge",
+            "title": "Fast Delivery",
+            "description": "Projects delivered on time."
+          },
+          {
+            "icon": "bi-shield-lock",
+            "title": "Secure Systems",
+            "description": "Top-grade security implementation."
+          },
+          {
+            "icon": "bi-gear",
+            "title": "Automation",
+            "description": "Optimize workflows using AI and automation."
+          },
+          {
+            "icon": "bi-graph-up",
+            "title": "Business Growth",
+            "description": "Strategic solutions that drive business success."
+          }
+        ],
+        "services_overview": {
+          "title": "Our Services",
+          "subtitle": "Comprehensive solutions tailored to your needs",
+          "items": [
+            {
+              "icon": "bi-briefcase",
+              "title": "Software Development",
+              "description": "Custom software solutions designed to streamline your business processes and improve efficiency."
+            },
+            {
+              "icon": "bi-globe",
+              "title": "Website Development",
+              "description": "Responsive, modern websites that represent your brand and convert visitors into customers."
+            },
+            {
+              "icon": "bi-bar-chart",
+              "title": "Data Services",
+              "description": "Data analysis, visualization, and insights to help you make informed business decisions."
+            },
+            {
+              "icon": "bi-mortarboard",
+              "title": "Training",
+              "description": "Technical training and workshops to empower your team with the latest skills and knowledge."
+            },
+            {
+              "icon": "bi-briefcase-fill",
+              "title": "Consulting",
+              "description": "Expert advice on technology strategy, digital transformation, and software architecture."
+            }
+          ]
+        },
+        "stats": {
+          "clients": 80,
+          "projects": 200,
+          "countries": 12
+        }
+      },
+      "cta": {
+        "text": "Ready to scale your business?",
+        "button_text": "Book a Consultation",
+        "button_url": "/contact"
+      }
+    },
+    "services": {
+      "seo": {
+        "title": "FTTG Services",
+        "description": "Explore our full list of services."
+      },
+      "categories": [
+        {
+          "name": "Development",
+          "services": [
+            {
+              "title": "Website Development",
+              "icon": "bi-globe",
+              "description": "Responsive sites using React, Next.js, Ionic.",
+              "features": [
+                "Responsive Design",
+                "SEO Optimized",
+                "CMS Integration",
+                "Custom APIs"
+              ]
+            },
+            {
+              "title": "Mobile App Development",
+              "icon": "bi-phone",
+              "description": "Cross-platform apps built with expertise.",
+              "features": [
+                "iOS & Android",
+                "Cross-Platform",
+                "Push Notifications",
+                "App Store Deployment"
+              ]
+            },
+            {
+              "title": "E-commerce Solutions",
+              "icon": "bi-shop",
+              "description": "Complete online shopping platforms.",
+              "features": [
+                "Custom Platforms",
+                "Payment Integration",
+                "Inventory Management",
+                "Order Processing"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cloud & Infrastructure",
+          "services": [
+            {
+              "title": "Cloud Migration",
+              "icon": "bi-cloud-upload",
+              "description": "AWS, Azure & GCP migration services.",
+              "features": [
+                "Cloud Strategy",
+                "Migration Planning",
+                "Implementation",
+                "Post-migration Support"
+              ]
+            },
+            {
+              "title": "DevOps Setup",
+              "icon": "bi-tools",
+              "description": "CI/CD pipeline automation.",
+              "features": [
+                "CI/CD Implementation",
+                "Containerization",
+                "Infrastructure as Code",
+                "Monitoring & Logging"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "IT Consulting",
+          "services": [
+            {
+              "title": "Technology Strategy",
+              "icon": "bi-lightbulb",
+              "description": "Guidance on your technology investments.",
+              "features": [
+                "Digital Transformation",
+                "Assessment",
+                "Roadmap Development",
+                "Cost Optimization"
+              ]
+            },
+            {
+              "title": "Security Consulting",
+              "icon": "bi-shield-lock",
+              "description": "Comprehensive cybersecurity solutions.",
+              "features": [
+                "Security Assessment",
+                "Risk Management",
+                "Compliance",
+                "Security Training"
+              ]
+            },
+            {
+              "title": "Project Management",
+              "icon": "bi-kanban",
+              "description": "Management of IT projects end-to-end.",
+              "features": [
+                "Planning",
+                "Risk Management",
+                "Quality Assurance",
+                "Delivery Management"
+              ]
+            }
+          ]
+        }
+      ],
+      "process": {
+        "title": "Our Process",
+        "steps": [
+          {
+            "number": "01",
+            "title": "Discovery",
+            "description": "Understanding your business needs and objectives."
+          },
+          {
+            "number": "02",
+            "title": "Planning",
+            "description": "Developing a strategic solution blueprint."
+          },
+          {
+            "number": "03",
+            "title": "Development",
+            "description": "Building your solution with cutting-edge technology."
+          },
+          {
+            "number": "04",
+            "title": "Testing",
+            "description": "Ensuring quality and reliability."
+          },
+          {
+            "number": "05",
+            "title": "Deployment",
+            "description": "Launching your solution with proper support."
+          },
+          {
+            "number": "06",
+            "title": "Maintenance",
+            "description": "Ongoing support, updates, and optimization."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Need Expert Technology Services?",
+        "description": "Let's discuss how we can help you achieve your technology goals.",
+        "button": { "text": "Get in Touch", "link": "#contact" }
+      }
+    },
+    "portfolio": {
+      "seo": {
+        "title": "FTTG Portfolio",
+        "description": "Case studies and completed projects."
+      },
+      "categories": [
+        {
+          "name": "Beauty & Lifestyle",
+          "projects": [
+            {
+              "title": "GlamorByBee",
+              "icon": "bi-heart",
+              "description": "Professional makeup booking platform with fast 30-second booking, service gallery, team showcase, and client testimonials. Features Instagram integration and booking system.",
+              "technologies": ["React", "Node.js", "MongoDB", "Stripe"],
+              "link": "https://glamorbybee.com/"
+            }
+          ]
+        },
+        {
+          "name": "Logistics & Business",
+          "projects": [
+            {
+              "title": "Emerging Logistics",
+              "icon": "bi-truck",
+              "description": "Freight and logistics company website showcasing services, fleet management, and shipping solutions with professional branding.",
+              "technologies": ["HTML5", "CSS3", "JavaScript", "Node.js"],
+              "link": "https://emergingl.com/"
+            }
+          ]
+        },
+        {
+          "name": "Data & Analytics",
+          "projects": [
+            {
+              "title": "Data Analytics Portfolio",
+              "icon": "bi-bar-chart",
+              "description": "Professional data analytics portfolio for Adefemi Kolawole. Showcases data-driven insights, advanced analytics, and business intelligence solutions.",
+              "technologies": ["React", "Python", "Tableau", "SQL"],
+              "link": "https://data.kolawoles.com/"
+            }
+          ]
+        },
+        {
+          "name": "Community & Music",
+          "projects": [
+            {
+              "title": "ChoristerCorner",
+              "icon": "bi-music-note",
+              "description": "All-in-one resource platform for choir and church music groups. Provides sheet music, resources, community features, and collaboration tools for musicians.",
+              "technologies": ["React", "Firebase", "Node.js", "PostgreSQL"],
+              "link": "https://choristercorner.com/"
+            }
+          ]
+        }
+      ],
+      "cta": {
+        "title": "Have a Project in Mind?",
+        "description": "Let's discuss how we can bring your ideas to life.",
+        "button": { "text": "Start a Conversation", "link": "#contact" }
+      }
+    },
+    "about": {
+      "seo": {
+        "title": "About FTTG Solutions",
+        "description": "Learn about our mission and team."
+      },
+      "hero": {
+        "title": "Empowering Businesses Through Technology",
+        "subtitle": "We build scalable digital solutions."
+      },
+      "intro": {
+        "title": "Who We Are",
+        "description": "FTTG Solutions is a leading provider of innovative IT solutions and services.",
+        "image": "image/fttg_display2.png"
+      },
+      "mission": "Our mission is to help businesses grow using modern technologies.",
+      "values": [
+        {
+          "icon": "bi-lightbulb",
+          "title": "Innovation",
+          "description": "Constantly exploring new technologies and solutions."
+        },
+        {
+          "icon": "bi-trophy",
+          "title": "Excellence",
+          "description": "Committed to delivering the highest quality solutions."
+        },
+        {
+          "icon": "bi-people",
+          "title": "Partnership",
+          "description": "Building long-term relationships with our clients."
+        },
+        {
+          "icon": "bi-shield-check",
+          "title": "Integrity",
+          "description": "Operating with honesty and transparency."
+        }
+      ],
+      "team": [
+        {
+          "name": "Elijah",
+          "role": "Founder & Lead Developer",
+          "image": "image/elijah.jpeg",
+          "bio": "Software engineer and tech enthusiast with extensive experience in full-stack development, data and cloud solutions.",
+          "social": {
+            "linkedin": "https://linkedin.com/in/femithetechguy",
+            "github": "https://github.com/femithetechguy",
+            "twitter": "https://twitter.com/femithetechguy"
+          }
+        }
+      ],
+      "process": {
+        "title": "Our Process",
+        "steps": [
+          {
+            "number": "01",
+            "title": "Discovery",
+            "description": "Understanding your business needs and objectives."
+          },
+          {
+            "number": "02",
+            "title": "Planning",
+            "description": "Developing a strategic solution blueprint."
+          },
+          {
+            "number": "03",
+            "title": "Development",
+            "description": "Building your solution with cutting-edge technology."
+          },
+          {
+            "number": "04",
+            "title": "Testing",
+            "description": "Ensuring quality and reliability."
+          },
+          {
+            "number": "05",
+            "title": "Deployment",
+            "description": "Launching your solution with proper support."
+          },
+          {
+            "number": "06",
+            "title": "Maintenance",
+            "description": "Ongoing support, updates, and optimization."
+          }
+        ]
+      },
+      "stats": {
+        "title": "Our Impact",
+        "items": [
+          { "number": "100+", "label": "Projects Completed" },
+          { "number": "50+", "label": "Happy Clients" },
+          { "number": "5+", "label": "Years Experience" }
+        ]
+      },
+      "cta": {
+        "title": "Ready to Work Together?",
+        "description": "Let's start a conversation about your technology needs.",
+        "button": { "text": "Contact Us", "link": "#contact" }
+      }
+    },
+    "blog": {
+      "seo": {
+        "title": "FTTG Blog",
+        "description": "Insights, tutorials, and updates."
+      },
+      "categories": [
+        "Technology",
+        "Development",
+        "Cloud Computing",
+        "IT Solutions",
+        "Digital Transformation"
+      ],
+      "posts": [
+        {
+          "title": "The Future of Cloud Computing in 2025",
+          "date": "August 15, 2025",
+          "category": "Cloud Computing",
+          "image": "images/blog/cloud-computing.jpg",
+          "excerpt": "Explore the latest trends and innovations in cloud computing and how they're shaping business transformation.",
+          "author": { "name": "FTTG Team", "avatar": "images/team/author.jpg" },
+          "link": "/blog/future-of-cloud-computing"
+        },
+        {
+          "title": "Building Scalable Web Applications",
+          "date": "August 10, 2025",
+          "category": "Development",
+          "image": "images/blog/web-dev.jpg",
+          "excerpt": "Best practices and techniques for developing scalable and maintainable web applications.",
+          "author": { "name": "FTTG Team", "avatar": "images/team/author.jpg" },
+          "link": "/blog/scalable-web-applications"
+        },
+        {
+          "title": "Digital Transformation Success Stories",
+          "date": "August 5, 2025",
+          "category": "Digital Transformation",
+          "image": "images/blog/digital-transform.jpg",
+          "excerpt": "Real-world examples of successful digital transformation initiatives and their impact.",
+          "author": { "name": "FTTG Team", "avatar": "images/team/author.jpg" },
+          "link": "/blog/digital-transformation-success"
+        }
+      ],
+      "sidebar": {
+        "popularPosts": [
+          {
+            "title": "The Future of Cloud Computing in 2025",
+            "date": "August 15, 2025",
+            "link": "/blog/future-of-cloud-computing"
+          },
+          {
+            "title": "Building Scalable Web Applications",
+            "date": "August 10, 2025",
+            "link": "/blog/scalable-web-applications"
+          }
+        ],
+        "tags": [
+          "Cloud",
+          "Development",
+          "Web",
+          "Mobile",
+          "Security",
+          "DevOps",
+          "AI",
+          "Digital"
+        ]
+      }
+    },
+    "contact": {
+      "seo": {
+        "title": "Contact FTTG Solutions",
+        "description": "Get in touch for inquiries or project quotes."
+      },
+      "hero": {
+        "title": "Let’s Work Together",
+        "subtitle": "Fill out the form and we’ll reach out within 24 hours."
+      },
+      "info": {
+        "description": "We're here to help! Send us a message and we'll respond as soon as possible.",
+        "contact": {
+          "address": "1500 Southland Cir NW, Ste H\nAtlanta, GA 30318",
+          "email": "dev@fttgsolutions.com",
+          "phone": "+1 (214) 249-1224"
+        },
+        "social": {
+          "twitter": "https://twitter.com/fttgsolutions",
+          "instagram": "https://instagram.com/fttgsolutions"
+        }
+      },
+      "form": {
+        "title": "Send Us a Message",
+        "fields": [
+          {
+            "type": "text",
+            "name": "name",
+            "label": "Your Name",
+            "required": true
+          },
+          {
+            "type": "email",
+            "name": "email",
+            "label": "Your Email",
+            "required": true
+          },
+          {
+            "type": "text",
+            "name": "subject",
+            "label": "Subject",
+            "required": true
+          },
+          {
+            "type": "textarea",
+            "name": "message",
+            "label": "Your Message",
+            "required": true
+          }
+        ],
+        "button": { "text": "Send Message", "type": "submit" },
+        "success_message": "Your message has been sent! We’ll respond shortly.",
+        "error_message": "Something went wrong. Please try again."
+      },
+      "map": {
+        "enabled": false,
+        "location": { "lat": 0, "lng": 0, "zoom": 15 }
+      }
+    }
+  },
+  "global": {
+    "version": "1.0.0",
+    "styles": "global.css",
+    "scripts": "global.js"
+  }
+}
