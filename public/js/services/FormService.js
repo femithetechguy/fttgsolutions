@@ -266,66 +266,119 @@ class FormService {
     }
 
     /**
-     * Show success message with alert
+     * Show success message with styled popup
      */
     showSuccess(message) {
         console.log('🎉 showSuccess called with message:', message);
         
-        // Try to find success alert element
-        const successAlert = document.getElementById('successAlert');
-        
-        if (successAlert) {
-            console.log('✓ successAlert element found, displaying message');
-            successAlert.innerHTML = `<i class="bi bi-check-circle-fill"></i> <strong>✅ ${message}</strong>`;
-            successAlert.classList.remove('hidden');
-            successAlert.style.display = 'block';
-            successAlert.style.visibility = 'visible';
-            successAlert.style.opacity = '1';
-            
-            // Scroll into view
-            setTimeout(() => {
-                successAlert.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-            
-            // Auto-hide after 8 seconds
-            setTimeout(() => {
-                successAlert.classList.add('hidden');
-            }, 8000);
-        } else {
-            console.warn('⚠️ successAlert element NOT FOUND, using fallback');
-            alert(`✅ ${message}`);
+        // Create overlay if it doesn't exist
+        let overlay = document.getElementById('formOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'formOverlay';
+            overlay.className = 'fixed inset-0 bg-black/50 z-40 transition-opacity duration-300';
+            document.body.appendChild(overlay);
         }
+        
+        // Create or update modal
+        let modal = document.getElementById('formStatusModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'formStatusModal';
+            document.body.appendChild(modal);
+        }
+        
+        modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+        modal.innerHTML = `
+            <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 animate-in fade-in zoom-in-95 duration-300">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center animate-bounce">
+                        <i class="bi bi-check-circle-fill text-green-600 text-3xl"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 text-center mb-3">Success!</h3>
+                <p class="text-gray-700 text-center mb-6 leading-relaxed">${message}</p>
+                <button onclick="document.getElementById('formStatusModal')?.remove(); document.getElementById('formOverlay')?.remove();" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Got it
+                </button>
+            </div>
+        `;
+        
+        overlay.classList.remove('hidden');
+        overlay.style.display = 'block';
+        overlay.style.opacity = '1';
+        
+        // Close on overlay click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                modal.remove();
+                overlay.remove();
+            }
+        });
+        
+        // Auto-close after 5 seconds
+        setTimeout(() => {
+            modal.remove();
+            overlay.remove();
+        }, 5000);
     }
 
     /**
-     * Show error message with alert
+     * Show error message with styled popup
      */
     showError(message) {
         console.log('❌ showError called with message:', message);
         
-        // Try to find error alert elements
-        const errorAlert = document.getElementById('errorAlert');
-        const errorMsg = document.getElementById('errorMsg');
-        
-        if (errorAlert && errorMsg) {
-            console.log('✓ errorAlert element found, displaying message');
-            errorMsg.innerHTML = `<i class="bi bi-exclamation-circle-fill"></i> ${message}`;
-            errorAlert.classList.remove('hidden');
-            errorAlert.style.display = 'block';
-            errorAlert.style.visibility = 'visible';
-            errorAlert.style.opacity = '1';
-            
-            // Scroll into view
-            errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            // Auto-hide after 8 seconds
-            setTimeout(() => {
-                errorAlert.classList.add('hidden');
-            }, 8000);
-        } else {
-            console.warn('⚠️ errorAlert or errorMsg element NOT FOUND, using fallback');
-            alert(message);
+        // Create overlay if it doesn't exist
+        let overlay = document.getElementById('formOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'formOverlay';
+            overlay.className = 'fixed inset-0 bg-black/50 z-40 transition-opacity duration-300';
+            document.body.appendChild(overlay);
         }
+        
+        // Create or update modal
+        let modal = document.getElementById('formStatusModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'formStatusModal';
+            document.body.appendChild(modal);
+        }
+        
+        modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+        modal.innerHTML = `
+            <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 animate-in fade-in zoom-in-95 duration-300">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="bi bi-exclamation-circle-fill text-red-600 text-3xl"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 text-center mb-3">Oops!</h3>
+                <p class="text-gray-700 text-center mb-6 leading-relaxed">${message}</p>
+                <button onclick="document.getElementById('formStatusModal')?.remove(); document.getElementById('formOverlay')?.remove();" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Try Again
+                </button>
+            </div>
+        `;
+        
+        overlay.classList.remove('hidden');
+        overlay.style.display = 'block';
+        overlay.style.opacity = '1';
+        
+        // Close on overlay click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                modal.remove();
+                overlay.remove();
+            }
+        });
+        
+        // Auto-close after 8 seconds
+        setTimeout(() => {
+            modal.remove();
+            overlay.remove();
+        }, 8000);
     }
 
     /**
