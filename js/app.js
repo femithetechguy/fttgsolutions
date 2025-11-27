@@ -1,16 +1,35 @@
 // Modular, responsive, dynamic app - loads all content from json/app.json
 const APP_JSON_PATH = 'json/app.json';
 let appData = null;
+let appDataHash = null;
 
 async function fetchAppData() {
   try {
-    const res = await fetch(APP_JSON_PATH);
+    const res = await fetch(APP_JSON_PATH + '?t=' + Date.now()); // Cache bust
     if (!res.ok) throw new Error('Failed to load app.json');
     return await res.json();
   } catch (e) {
     console.error(e);
     document.getElementById('app').innerHTML = `<div class="error">Could not load app data. Please check json/app.json exists.</div>`;
     throw e;
+  }
+}
+
+async function checkForDataChanges() {
+  try {
+    const newData = await fetchAppData();
+    const newHash = JSON.stringify(newData);
+    
+    if (appDataHash && newHash !== appDataHash) {
+      console.log('JSON updated! Reloading app...');
+      appData = newData;
+      appDataHash = newHash;
+      setCSSVars(appData.design.colors);
+      setFonts(appData.design.fonts);
+      route(appData); // Re-render current page
+    }
+  } catch (e) {
+    console.warn('Error checking for JSON changes:', e);
   }
 }
 
@@ -34,9 +53,10 @@ function setFonts(fonts) {
 function renderHeader(header) {
   return `<header class="bg-gradient-to-r from-blue-600 to-cyan-400 text-white sticky top-0 z-50 shadow-lg">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="logo flex-shrink-0">
-        <img src="${header.logo}" alt="Logo" class="h-14" onerror="this.style.display='none'">
-      </div>
+      <a href="#home" class="logo flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <img src="${header.logo}" alt="Logo" class="h-14" onerror="this.nextElementSibling.style.display='block'">
+        <span class="text-white font-bold text-lg hidden">FTTG Solutions</span>
+      </a>
       <button class="menu-toggle md:hidden flex flex-col gap-1.5 bg-transparent border-none cursor-pointer" id="menuToggle">
         <span class="w-6 h-0.5 bg-white rounded transition-all duration-300"></span>
         <span class="w-6 h-0.5 bg-white rounded transition-all duration-300"></span>
@@ -50,21 +70,60 @@ function renderHeader(header) {
       </nav>
       ${header.cta_enabled ? `<a href="#${header.cta_url.replace('/', '')}" class="hidden md:inline-block bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-2 rounded font-semibold transition-all">${header.cta_text}</a>` : ''}
     </div>
-    <nav class="hidden flex-col gap-0 bg-blue-600 max-h-0 overflow-hidden transition-all duration-300" id="mobileMenu">
+    <nav class="hidden flex-col gap-0 bg-transparent max-h-0 overflow-hidden transition-all duration-300 pointer-events-none" id="mobileMenu">
       ${header.menu.map(item => {
         const href = item.url === '/' ? '#home' : `#${item.url.replace('/', '')}`;
-        return `<a href="${href}" class="menu-link block px-4 py-3 border-b border-blue-500 hover:bg-blue-700 transition-colors">${item.label}</a>`;
+        return `<a href="${href}" class="menu-link block px-4 py-3 border-b border-white/30 hover:bg-white/10 transition-colors text-right pointer-events-auto">${item.label}</a>`;
       }).join('')}
     </nav>
   </header>`;
 }
 
 function renderFooter(footer) {
-  return `<footer class="bg-blue-600 text-white py-8 mt-12">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="copyright text-center md:text-left">${footer.copyright}</div>
-      <div class="social flex gap-6 text-xl">
-        ${footer.social.map(s => `<a href="${s.url}" target="_blank" rel="noopener" class="hover:text-cyan-400 transition-colors"><i class="bi ${s.icon}"></i></a>`).join('')}
+  return `<footer class="bg-gray-900 text-white py-12 md:py-16 mt-12">
+    <div class="max-w-6xl mx-auto px-4 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <!-- Branding Section -->
+        <div class="lg:col-span-1">
+          <h3 class="text-xl font-bold mb-2">fttsolutions</h3>
+          <p class="text-gray-400 text-sm">${footer.tagline}</p>
+        </div>
+        
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-lg font-bold mb-4 pb-2 border-b border-gray-700">Quick Links</h4>
+          <ul class="space-y-2">
+            ${footer.quick_links.map(link => `<li><a href="${link.url}" class="text-gray-400 hover:text-cyan-400 transition-colors">${link.label}</a></li>`).join('')}
+          </ul>
+        </div>
+        
+        <!-- Company -->
+        <div>
+          <h4 class="text-lg font-bold mb-4 pb-2 border-b border-gray-700">Company</h4>
+          <ul class="space-y-2">
+            ${footer.company_links.map(link => `<li><a href="${link.url}" class="text-gray-400 hover:text-cyan-400 transition-colors">${link.label}</a></li>`).join('')}
+          </ul>
+        </div>
+        
+        <!-- Newsletter -->
+        <div class="lg:col-span-2">
+          <h4 class="text-lg font-bold mb-4 pb-2 border-b border-gray-700">${footer.newsletter.title}</h4>
+          <p class="text-gray-400 text-sm mb-4">${footer.newsletter.description}</p>
+          <div class="flex gap-2">
+            <input type="email" placeholder="${footer.newsletter.placeholder}" class="flex-1 px-4 py-2 rounded bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            <button class="bg-cyan-400 hover:bg-cyan-500 text-gray-900 font-bold px-4 py-2 rounded transition-all">${footer.newsletter.button_text}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bottom Section -->
+    <div class="border-t border-gray-700 pt-8">
+      <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-center md:text-left text-gray-400 text-sm">${footer.copyright}</div>
+        <div class="social flex gap-6 text-lg">
+          ${footer.social.map(s => `<a href="${s.url}" target="_blank" rel="noopener" class="text-gray-400 hover:text-cyan-400 transition-colors"><i class="bi ${s.icon}"></i></a>`).join('')}
+        </div>
       </div>
     </div>
   </footer>`;
@@ -105,15 +164,20 @@ function renderHome(page) {
         </div>
       </div>
     </section>
-    <section class="bg-gray-100 py-12 md:py-20">
+    <section class="bg-white py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">${services.title}</h2>
-        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto text-lg">Comprehensive solutions tailored to your needs</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">${services.title}</h2>
+          <p class="text-gray-600 text-lg">${services.subtitle}</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           ${services.items.map(s => `
-            <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all border border-gray-200">
-              <h3 class="text-xl font-bold text-gray-900 mb-3">${s.title}</h3>
-              <p class="text-gray-600">${s.description}</p>
+            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg hover:-translate-y-2 transition-all text-center group">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-white rounded-lg mb-4 group-hover:bg-blue-50">
+                <i class="bi ${s.icon} text-3xl text-blue-600"></i>
+              </div>
+              <h3 class="text-lg font-bold text-gray-900 mb-2">${s.title}</h3>
+              <p class="text-gray-600 text-sm">${s.description}</p>
             </div>
           `).join('')}
         </div>
@@ -146,21 +210,31 @@ function renderHome(page) {
 
 function renderServices(page) {
   return `
-    <section class="bg-gradient-to-r from-blue-600 to-cyan-400 py-12 md:py-20 text-white text-center">
-      <h1 class="text-4xl md:text-5xl font-bold">Our Services</h1>
+    <section class="bg-white py-12 md:py-20">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-16">
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Services</h1>
+          <p class="text-gray-600 text-lg">Comprehensive solutions tailored to your needs</p>
+        </div>
+      </div>
     </section>
     ${page.categories.map(cat => `
-      <section class="py-12 md:py-20">
+      <section class="py-16 md:py-24 ${page.categories.indexOf(cat) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
         <div class="max-w-6xl mx-auto px-4">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">${cat.name}</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             ${cat.services.map(s => `
-              <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all border border-gray-200">
-                <h3 class="text-xl font-bold text-gray-900 mb-3">${s.title}</h3>
-                <p class="text-gray-600 mb-4">${s.description}</p>
-                <ul class="space-y-2">
-                  ${s.features.map(f => `<li class="text-gray-600"><span class="text-cyan-400 font-bold">✓</span> ${f}</li>`).join('')}
-                </ul>
+              <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all border border-gray-100">
+                <div class="bg-gradient-to-r from-blue-600 to-cyan-400 h-32 flex items-center justify-center">
+                  <i class="${s.icon} text-white" style="font-size: 56px;"></i>
+                </div>
+                <div class="p-8">
+                  <h3 class="text-xl font-bold text-gray-900 mb-3">${s.title}</h3>
+                  <p class="text-gray-600 mb-6 text-sm leading-relaxed">${s.description}</p>
+                  <ul class="space-y-3">
+                    ${s.features.map(f => `<li class="text-gray-700 text-sm flex items-start gap-2"><span class="text-cyan-400 font-bold text-lg leading-none mt-0.5">✓</span> <span>${f}</span></li>`).join('')}
+                  </ul>
+                </div>
               </div>
             `).join('')}
           </div>
@@ -168,12 +242,50 @@ function renderServices(page) {
       </section>
     `).join('')}
     <section class="bg-gray-50 py-12 md:py-20">
+      <style>
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .step-card {
+          animation: slideIn 0.6s ease-out forwards;
+        }
+        .step-card:nth-child(1) { animation-delay: 0.1s; }
+        .step-card:nth-child(2) { animation-delay: 0.2s; }
+        .step-card:nth-child(3) { animation-delay: 0.3s; }
+        .step-card:nth-child(4) { animation-delay: 0.4s; }
+        .arrow {
+          display: none;
+        }
+        @media (min-width: 1024px) {
+          .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5B6AFF;
+            font-size: 28px;
+            font-weight: bold;
+          }
+        }
+      </style>
       <div class="max-w-6xl mx-auto px-4 text-center">
         <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">${page.process.title}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="hidden lg:flex items-stretch justify-center gap-0">
+          ${page.process.steps.map((step, idx) => `
+            <div class="flex flex-col flex-1">
+              <div class="step-card bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all border-2 border-blue-600 h-full">
+                <div class="text-5xl font-bold text-blue-600 mb-4">${step.number}</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">${step.title}</h3>
+                <p class="text-gray-600">${step.description}</p>
+              </div>
+              ${idx < page.process.steps.length - 1 ? '<div class="arrow">→</div>' : ''}
+            </div>
+          `).join('')}
+        </div>
+        <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-6">
           ${page.process.steps.map(step => `
-            <div class="bg-white rounded-lg p-6 shadow-md">
-              <div class="text-4xl font-bold text-cyan-400 mb-3">${step.number}</div>
+            <div class="step-card bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all border-2 border-blue-600">
+              <div class="text-5xl font-bold text-blue-600 mb-4">${step.number}</div>
               <h3 class="text-xl font-bold text-gray-900 mb-2">${step.title}</h3>
               <p class="text-gray-600">${step.description}</p>
             </div>
@@ -185,31 +297,39 @@ function renderServices(page) {
 }
 
 function renderPortfolio(page) {
+  // Flatten all projects from all categories
+  const allProjects = page.categories.flatMap(cat => 
+    cat.projects.map(p => ({...p, category: cat.name}))
+  );
+  
   return `
-    <section class="bg-gradient-to-r from-blue-600 to-cyan-400 py-12 md:py-20 text-white text-center">
-      <h1 class="text-4xl md:text-5xl font-bold">Our Portfolio</h1>
-    </section>
-    ${page.categories.map(cat => `
-      <section class="py-12 md:py-20">
-        <div class="max-w-6xl mx-auto px-4">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">${cat.name}</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${cat.projects.map(p => `
-              <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all">
-                <img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(p.title)}'">
-                <div class="p-6">
-                  <h3 class="text-xl font-bold text-gray-900 mb-2">${p.title}</h3>
-                  <p class="text-gray-600 mb-4">${p.description}</p>
-                  <div class="flex flex-wrap gap-2">
-                    ${p.technologies.map(t => `<span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">${t}</span>`).join('')}
-                  </div>
-                </div>
+    <section class="bg-white py-12 md:py-20">
+      <div class="max-w-6xl mx-auto px-4 text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Portfolio</h1>
+        <p class="text-gray-600 text-lg">Real projects we've delivered for our clients</p>
+      </div>
+      
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+          ${allProjects.map(p => `
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all border border-gray-100">
+              <div class="bg-gradient-to-r from-blue-600 to-cyan-400 h-40 flex items-center justify-center">
+                <i class="${p.icon} text-white" style="font-size: 64px;"></i>
               </div>
-            `).join('')}
-          </div>
+              <div class="p-8">
+                <div class="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">${p.category}</div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">${p.title}</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">${p.description}</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  ${p.technologies.map(t => `<span class="bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-sm font-semibold">${t}</span>`).join('')}
+                </div>
+                <a href="${p.link}" target="_blank" rel="noopener" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all">View Project →</a>
+              </div>
+            </div>
+          `).join('')}
         </div>
-      </section>
-    `).join('')}
+      </div>
+    </section>
   `;
 }
 
@@ -321,35 +441,76 @@ function renderBlog(page) {
 
 function renderContact(page) {
   return `
-    <section class="bg-gradient-to-r from-blue-600 to-cyan-400 py-12 md:py-20 text-white text-center">
-      <h1 class="text-4xl md:text-5xl font-bold">${page.hero.title}</h1>
-      <p class="text-lg md:text-xl opacity-90 mt-4">${page.hero.subtitle}</p>
-    </section>
-    <section class="py-12 md:py-20">
-      <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-gray-50 rounded-lg p-8">
-          <p class="text-gray-600 text-lg leading-relaxed mb-8">${page.info.description}</p>
-          <div class="space-y-4">
-            <p><strong class="text-gray-900">Email:</strong> <a href="mailto:${page.info.contact.email}" class="text-cyan-400 hover:text-cyan-500">${page.info.contact.email}</a></p>
-            <p><strong class="text-gray-900">Location:</strong> ${page.info.contact.address}</p>
-          </div>
-        </div>
+    <section class="bg-white py-12 md:py-20">
+      <div class="max-w-6xl mx-auto px-4 text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Get In Touch</h1>
+        <p class="text-gray-600 text-lg">Contact us to discuss your project</p>
+      </div>
+      
+      <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Contact Form -->
         <form class="bg-gray-50 rounded-lg p-8" id="contactForm">
-          <h2 class="text-2xl font-bold text-gray-900 mb-6">${page.form.title}</h2>
           ${page.form.fields.map(field => {
             if (field.type === 'textarea') {
               return `<div class="mb-6">
                 <label for="${field.name}" class="block text-gray-900 font-semibold mb-2">${field.label}</label>
-                <textarea id="${field.name}" name="${field.name}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100" rows="5" ${field.required ? 'required' : ''}></textarea>
+                <textarea id="${field.name}" name="${field.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" rows="5" ${field.required ? 'required' : ''}></textarea>
               </div>`;
             }
             return `<div class="mb-6">
               <label for="${field.name}" class="block text-gray-900 font-semibold mb-2">${field.label}</label>
-              <input type="${field.type}" id="${field.name}" name="${field.name}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100" ${field.required ? 'required' : ''}>
+              <input type="${field.type}" id="${field.name}" name="${field.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" ${field.required ? 'required' : ''}>
             </div>`;
           }).join('')}
-          <button type="submit" class="w-full bg-cyan-400 hover:bg-cyan-500 text-white py-3 rounded-lg font-semibold transition-all">${page.form.button.text}</button>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold uppercase tracking-wider transition-all">${page.form.button.text}</button>
         </form>
+        
+        <!-- Contact Information -->
+        <div class="bg-gray-50 rounded-lg p-8">
+          <h3 class="text-lg font-bold text-gray-900 mb-6">Contact Information</h3>
+          
+          <div class="space-y-6">
+            <!-- Address -->
+            <div class="flex gap-4">
+              <div class="text-2xl text-gray-400 flex-shrink-0">📍</div>
+              <div>
+                <p class="text-gray-900 font-semibold whitespace-pre-line">${page.info.contact.address}</p>
+              </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="flex gap-4">
+              <div class="text-2xl text-gray-400 flex-shrink-0">✉️</div>
+              <div>
+                <a href="mailto:${page.info.contact.email}" class="text-gray-900 hover:text-blue-600 transition-colors">${page.info.contact.email}</a>
+              </div>
+            </div>
+            
+            <!-- Phone -->
+            <div class="flex gap-4">
+              <div class="text-2xl text-gray-400 flex-shrink-0">📞</div>
+              <div>
+                <a href="tel:${page.info.contact.phone.replace(/\D/g, '')}" class="text-blue-600 hover:text-blue-700 transition-colors">${page.info.contact.phone}</a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Social Links -->
+          <div class="mt-8 pt-8 border-t border-gray-300">
+            <p class="text-gray-600 font-semibold mb-4">Follow Us</p>
+            <div class="flex gap-6 text-3xl">
+              ${page.info.social ? Object.entries(page.info.social).map(([platform, url]) => {
+                const iconMap = {
+                  'twitter': 'bi-twitter',
+                  'instagram': 'bi-instagram',
+                  'facebook': 'bi-facebook',
+                  'linkedin': 'bi-linkedin'
+                };
+                return `<a href="${url}" target="_blank" rel="noopener" class="text-gray-600 hover:text-blue-600 transition-colors"><i class="bi ${iconMap[platform] || 'bi-link'}"></i></a>`;
+              }).join('') : ''}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   `;
@@ -393,24 +554,28 @@ function setupMobileMenu() {
   
   menuToggle.addEventListener('click', () => {
     mobileMenu.classList.toggle('hidden');
-    mobileMenu.classList.toggle('flex');
+    mobileMenu.classList.toggle('max-h-96');
   });
   
   // Close menu when a link is clicked
   document.querySelectorAll('#mobileMenu .menu-link').forEach(link => {
     link.addEventListener('click', () => {
       mobileMenu.classList.add('hidden');
-      mobileMenu.classList.remove('flex');
+      mobileMenu.classList.remove('max-h-96');
     });
   });
 }
 
 async function initApp() {
   appData = await fetchAppData();
+  appDataHash = JSON.stringify(appData);
   setCSSVars(appData.design.colors);
   setFonts(appData.design.fonts);
   route(appData);
   window.onhashchange = () => route(appData);
+  
+  // Check for JSON changes every 500ms
+  setInterval(checkForDataChanges, 500);
 }
 
 document.addEventListener('DOMContentLoaded', initApp);

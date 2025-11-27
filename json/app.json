@@ -41,7 +41,7 @@
   },
   "global_components": {
     "header": {
-      "logo": "assets/images/logo.png",
+      "logo": "",
       "cta_enabled": true,
       "cta_text": "Get a Quote",
       "cta_url": "/contact",
@@ -55,7 +55,24 @@
       ]
     },
     "footer": {
+      "tagline": "Innovative software solutions for modern businesses",
       "copyright": "© 2025 FTTG Solutions. All Rights Reserved.",
+      "quick_links": [
+        { "label": "Home", "url": "#home" },
+        { "label": "Services", "url": "#services" },
+        { "label": "Portfolio", "url": "#portfolio" }
+      ],
+      "company_links": [
+        { "label": "About", "url": "#about" },
+        { "label": "Blog", "url": "#blog" },
+        { "label": "Contact", "url": "#contact" }
+      ],
+      "newsletter": {
+        "title": "Newsletter",
+        "description": "Subscribe to receive updates and insights",
+        "placeholder": "Your Email",
+        "button_text": "Subscribe"
+      },
       "social": [
         { "icon": "bi-facebook", "url": "https://facebook.com" },
         { "icon": "bi-instagram", "url": "https://instagram.com" },
@@ -99,27 +116,33 @@
           }
         ],
         "services_overview": {
-          "title": "Our Core Services",
+          "title": "Our Services",
+          "subtitle": "Comprehensive solutions tailored to your needs",
           "items": [
             {
-              "title": "Cloud Migration",
-              "description": "Move to the cloud seamlessly."
+              "icon": "bi-briefcase",
+              "title": "Software Development",
+              "description": "Custom software solutions designed to streamline your business processes and improve efficiency."
             },
             {
-              "title": "Web Development",
-              "description": "Custom web apps for business operations."
+              "icon": "bi-globe",
+              "title": "Website Development",
+              "description": "Responsive, modern websites that represent your brand and convert visitors into customers."
             },
             {
-              "title": "Mobile Apps",
-              "description": "iOS and Android apps built with efficiency."
+              "icon": "bi-bar-chart",
+              "title": "Data Services",
+              "description": "Data analysis, visualization, and insights to help you make informed business decisions."
             },
             {
-              "title": "Cybersecurity",
-              "description": "Protecting your digital assets and data."
+              "icon": "bi-mortarboard",
+              "title": "Training",
+              "description": "Technical training and workshops to empower your team with the latest skills and knowledge."
             },
             {
-              "title": "IT Consulting",
-              "description": "Guidance on technology strategy and digital transformation."
+              "icon": "bi-briefcase-fill",
+              "title": "Consulting",
+              "description": "Expert advice on technology strategy, digital transformation, and software architecture."
             }
           ]
         },
@@ -146,6 +169,7 @@
           "services": [
             {
               "title": "Website Development",
+              "icon": "bi-globe",
               "description": "Responsive sites using React, Next.js, Ionic.",
               "features": [
                 "Responsive Design",
@@ -156,6 +180,7 @@
             },
             {
               "title": "Mobile App Development",
+              "icon": "bi-phone",
               "description": "Cross-platform apps built with expertise.",
               "features": [
                 "iOS & Android",
@@ -166,6 +191,7 @@
             },
             {
               "title": "E-commerce Solutions",
+              "icon": "bi-shop",
               "description": "Complete online shopping platforms.",
               "features": [
                 "Custom Platforms",
@@ -181,6 +207,7 @@
           "services": [
             {
               "title": "Cloud Migration",
+              "icon": "bi-cloud-upload",
               "description": "AWS, Azure & GCP migration services.",
               "features": [
                 "Cloud Strategy",
@@ -191,6 +218,7 @@
             },
             {
               "title": "DevOps Setup",
+              "icon": "bi-tools",
               "description": "CI/CD pipeline automation.",
               "features": [
                 "CI/CD Implementation",
@@ -206,6 +234,7 @@
           "services": [
             {
               "title": "Technology Strategy",
+              "icon": "bi-lightbulb",
               "description": "Guidance on your technology investments.",
               "features": [
                 "Digital Transformation",
@@ -216,6 +245,7 @@
             },
             {
               "title": "Security Consulting",
+              "icon": "bi-shield-lock",
               "description": "Comprehensive cybersecurity solutions.",
               "features": [
                 "Security Assessment",
@@ -226,6 +256,7 @@
             },
             {
               "title": "Project Management",
+              "icon": "bi-kanban",
               "description": "Management of IT projects end-to-end.",
               "features": [
                 "Planning",
@@ -275,45 +306,50 @@
       },
       "categories": [
         {
-          "name": "Web Development",
+          "name": "Beauty & Lifestyle",
           "projects": [
             {
-              "title": "E-commerce Platform",
-              "image": "assets/images/portfolio/ecommerce.jpg",
-              "description": "A full-featured online shopping platform with secure payments.",
-              "technologies": ["React", "Node.js", "MongoDB"],
-              "link": "#"
-            },
-            {
-              "title": "Business Website",
-              "image": "assets/images/portfolio/business.jpg",
-              "description": "Modern responsive website for a consulting firm.",
-              "technologies": ["HTML5", "CSS3", "JavaScript"],
-              "link": "#"
+              "title": "GlamorByBee",
+              "icon": "bi-heart",
+              "description": "Professional makeup booking platform with fast 30-second booking, service gallery, team showcase, and client testimonials. Features Instagram integration and booking system.",
+              "technologies": ["React", "Node.js", "MongoDB", "Stripe"],
+              "link": "https://glamorbybee.com/"
             }
           ]
         },
         {
-          "name": "Mobile Development",
+          "name": "Logistics & Business",
           "projects": [
             {
-              "title": "Fitness App",
-              "image": "assets/images/portfolio/fitness.jpg",
-              "description": "Cross-platform mobile app for fitness tracking.",
-              "technologies": ["React Native", "Firebase"],
-              "link": "#"
+              "title": "Emerging Logistics",
+              "icon": "bi-truck",
+              "description": "Freight and logistics company website showcasing services, fleet management, and shipping solutions with professional branding.",
+              "technologies": ["HTML5", "CSS3", "JavaScript", "Node.js"],
+              "link": "https://emergingl.com/"
             }
           ]
         },
         {
-          "name": "Cloud Solutions",
+          "name": "Data & Analytics",
           "projects": [
             {
-              "title": "Cloud Migration",
-              "image": "assets/images/portfolio/cloud.jpg",
-              "description": "Successfully migrated enterprise application to AWS.",
-              "technologies": ["AWS", "Docker", "Kubernetes"],
-              "link": "#"
+              "title": "Data Analytics Portfolio",
+              "icon": "bi-bar-chart",
+              "description": "Professional data analytics portfolio for Adefemi Kolawole. Showcases data-driven insights, advanced analytics, and business intelligence solutions.",
+              "technologies": ["React", "Python", "Tableau", "SQL"],
+              "link": "https://data.kolawoles.com/"
+            }
+          ]
+        },
+        {
+          "name": "Community & Music",
+          "projects": [
+            {
+              "title": "ChoristerCorner",
+              "icon": "bi-music-note",
+              "description": "All-in-one resource platform for choir and church music groups. Provides sheet music, resources, community features, and collaboration tools for musicians.",
+              "technologies": ["React", "Firebase", "Node.js", "PostgreSQL"],
+              "link": "https://choristercorner.com/"
             }
           ]
         }
@@ -336,7 +372,7 @@
       "intro": {
         "title": "Who We Are",
         "description": "FTTG Solutions is a leading provider of innovative IT solutions and services.",
-        "image": "https://placehold.co/600x400/darkgray/white?text=FTTG+Solutions"
+        "image": "image/fttg_display2.png"
       },
       "mission": "Our mission is to help businesses grow using modern technologies.",
       "values": [
@@ -363,14 +399,25 @@
       ],
       "team": [
         {
-          "name": "Elijah",
+          "name": "Femi Fatokun",
           "role": "Founder & Lead Developer",
-          "image": "https://placehold.co/400x400/darkgray/white?text=Femi",
+          "image": "image/asset1.png",
           "bio": "Software engineer with extensive experience in full-stack development and cloud solutions.",
           "social": {
             "linkedin": "https://linkedin.com/in/femithetechguy",
             "github": "https://github.com/femithetechguy",
             "twitter": "https://twitter.com/femithetechguy"
+          }
+        },
+        {
+          "name": "Elijah",
+          "role": "Lead Developer & Owner",
+          "image": "image/asset2.png",
+          "bio": "Experienced full-stack developer with expertise in modern web technologies, DevOps, and scalable architecture.",
+          "social": {
+            "linkedin": "https://linkedin.com/in/elijah-dev",
+            "github": "https://github.com/elijah-dev",
+            "twitter": "https://twitter.com/elijah-dev"
           }
         }
       ],
@@ -496,13 +543,13 @@
       "info": {
         "description": "We're here to help! Send us a message and we'll respond as soon as possible.",
         "contact": {
-          "email": "info@fttgsolutions.com",
-          "phone": "Contact form on website",
-          "address": "United Kingdom"
+          "address": "1500 Southland Cir NW, Ste H\nAtlanta, GA 30318",
+          "email": "dev@fttgsolutions.com",
+          "phone": "+1 (214) 249-1224"
         },
         "social": {
-          "linkedin": "https://linkedin.com/company/fttg-solutions",
-          "github": "https://github.com/fttgsolutions"
+          "twitter": "https://twitter.com/fttgsolutions",
+          "instagram": "https://instagram.com/fttgsolutions"
         }
       },
       "form": {
