@@ -142,7 +142,7 @@ module.exports = async (req, res) => {
 
     // Send email to business
     await transporter.sendMail({
-      from: `"FTTG Solutions" <${process.env.EMAIL_USER}>`,
+      from: `"FTTG Solutions" <dev@fttgsolutions.com>`,
       to: 'dev@fttgsolutions.com',
       replyTo: data.email,
       subject: `New Contact: ${data.subject}`,
@@ -154,7 +154,7 @@ module.exports = async (req, res) => {
     // Optional: Send confirmation email to user
     try {
       await transporter.sendMail({
-        from: `"FTTG Solutions" <${process.env.EMAIL_USER}>`,
+        from: `"FTTG Solutions" <dev@fttgsolutions.com>`,
         to: data.email,
         subject: 'We received your message - FTTG Solutions',
         html: `
