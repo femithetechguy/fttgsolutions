@@ -631,7 +631,9 @@ function route(data) {
   // Remove leading/trailing slashes and get the page name
   let page = path.replace(/^\/|\/$/g, '') || 'home';
   
-  console.log(`🔗 Navigating to: /${page}`);
+  console.log(`🔗 Route function called`);
+  console.log(`🔗 Current pathname: ${path}`);
+  console.log(`🔗 Extracted page: ${page}`);
   const main = document.getElementById('app');
   try {
     main.innerHTML =
