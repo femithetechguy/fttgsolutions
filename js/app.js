@@ -389,24 +389,6 @@ function renderAbout(page) {
         <p class="text-gray-600 text-lg leading-relaxed">${page.intro.description}</p>
       </div>
     </section>
-    <section class="bg-blue-50 py-12 md:py-20">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Interested in Our Services?</h2>
-        <div class="bg-white rounded-lg p-6 shadow-md">
-          <label class="block text-sm font-semibold text-gray-900 mb-3">Select a Service or Add Your Own</label>
-          <div class="flex flex-col md:flex-row gap-3">
-            <select id="serviceDropdown" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400">
-              <option value="">-- Choose a Service --</option>
-              ${allServices.map(svc => `<option value="${svc}">${svc}</option>`).join('')}
-              <option value="__custom">+ Add Custom Service</option>
-            </select>
-            <button id="serviceSubmitBtn" class="px-6 py-2 bg-cyan-400 text-gray-900 font-semibold rounded-lg hover:bg-cyan-500 transition-colors cursor-pointer">Submit</button>
-          </div>
-          <input type="text" id="customServiceInput" placeholder="Enter custom service name..." class="w-full mt-3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 hidden" />
-          <div id="serviceMessage" class="mt-4 text-sm"></div>
-        </div>
-      </div>
-    </section>
     <section class="bg-gray-50 py-12 md:py-20">
       <div class="max-w-4xl mx-auto px-4 text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
@@ -430,13 +412,13 @@ function renderAbout(page) {
     <section class="bg-gray-50 py-12 md:py-20">
       <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Our Team</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="flex flex-wrap justify-center gap-8">
           ${page.team.map(m => `
-            <div class="bg-white rounded-lg p-6 text-center shadow-md">
-              <img src="${m.image}" alt="${m.name}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://via.placeholder.com/300x300?text=${encodeURIComponent(m.name)}'">
-              <h3 class="text-xl font-bold text-gray-900">${m.name}</h3>
-              <p class="text-cyan-400 font-semibold mb-3">${m.role}</p>
-              <p class="text-gray-600">${m.bio}</p>
+            <div class="w-full md:w-96 bg-white rounded-lg p-8 text-center shadow-md">
+              <img src="${m.image}" alt="${m.name}" class="w-56 h-56 rounded-full mx-auto mb-6 object-cover" style="object-position: center 20%;" onerror="this.src='https://via.placeholder.com/300x300?text=${encodeURIComponent(m.name)}'">
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">${m.name}</h3>
+              <p class="text-cyan-400 font-semibold mb-4 text-lg">${m.role}</p>
+              <p class="text-gray-600 text-base">${m.bio}</p>
             </div>
           `).join('')}
         </div>
