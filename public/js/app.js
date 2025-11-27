@@ -785,7 +785,7 @@ function openProjectModal(link, title) {
     modal.id = 'projectModal';
     modal.innerHTML = `
       <div id="projectModalBackdrop" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onclick="closeProjectModal(event)">
-        <div class="bg-white rounded-lg w-[95vw] h-[90vh] flex flex-col shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+        <div class="bg-white rounded-lg flex flex-col shadow-2xl overflow-hidden" style="width: 95vw; height: 90vh; max-height: 90dvh;" onclick="event.stopPropagation()">
           <div class="flex items-center justify-between p-4 border-b bg-gray-50 flex-shrink-0 relative z-10">
             <h2 id="projectModalTitle" class="text-lg md:text-xl font-bold text-gray-900 flex-1 break-words pr-2"></h2>
             <button onclick="closeProjectModal()" class="flex-shrink-0 text-gray-600 hover:text-red-600 hover:bg-red-100 p-2 rounded-lg transition-all cursor-pointer" title="Close modal">
