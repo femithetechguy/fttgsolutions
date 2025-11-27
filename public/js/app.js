@@ -785,15 +785,15 @@ function openProjectModal(link, title) {
     modal.id = 'projectModal';
     modal.innerHTML = `
       <div id="projectModalBackdrop" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onclick="closeProjectModal(event)">
-        <div class="bg-white rounded-lg w-[95vw] h-[90vh] flex flex-col shadow-2xl" onclick="event.stopPropagation()">
+        <div class="bg-white rounded-lg w-[95vw] h-[90vh] flex flex-col shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
           <div class="flex items-center justify-between p-4 border-b bg-gray-50 flex-shrink-0 relative z-10">
             <h2 id="projectModalTitle" class="text-lg md:text-xl font-bold text-gray-900 flex-1 break-words pr-2"></h2>
             <button onclick="closeProjectModal()" class="flex-shrink-0 text-gray-600 hover:text-red-600 hover:bg-red-100 p-2 rounded-lg transition-all cursor-pointer" title="Close modal">
               <i class="bi bi-x text-2xl md:text-3xl"></i>
             </button>
           </div>
-          <div class="flex-1 overflow-auto">
-            <iframe id="projectIframe" src="" title="Project Preview" class="w-full h-full border-none" loading="lazy"></iframe>
+          <div class="flex-1 overflow-hidden min-h-0">
+            <iframe id="projectIframe" src="" title="Project Preview" class="w-full h-full border-none" loading="lazy" style="display: block;"></iframe>
           </div>
         </div>
       </div>
