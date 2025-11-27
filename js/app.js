@@ -861,8 +861,11 @@ async function initApp() {
   
   // Handle 404.html redirect for clean URLs
   if (sessionStorage.redirect) {
-    console.log('📡 Processing 404.html redirect...');
+    const redirectPath = sessionStorage.redirect;
+    console.log(`📡 Processing 404.html redirect to: ${redirectPath}`);
     delete sessionStorage.redirect;
+    // Update browser history to reflect the correct URL
+    window.history.replaceState({}, '', redirectPath);
   }
   
   route(appData);
