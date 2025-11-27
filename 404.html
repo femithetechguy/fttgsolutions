@@ -2,14 +2,21 @@
 <html>
 <head>
   <script>
-    // Redirect to index.html with the requested path as a query parameter
-    var pathSegments = window.location.pathname.split('/').filter(p => p.length > 0);
-    var path = pathSegments.length > 1 ? '/' + pathSegments.slice(1).join('/') : '/';
-    sessionStorage.redirect = path;
+    // Capture the requested path before redirect
+    var pathname = window.location.pathname;
+    console.log('404.html triggered for path:', pathname);
+    
+    // Store the path for the app to use
+    if (pathname !== '/') {
+      sessionStorage.setItem('redirect', pathname);
+      console.log('Stored redirect path:', pathname);
+    }
+    
     // Redirect to home page
     window.location.href = '/';
   </script>
 </head>
 <body>
+  <p>Redirecting...</p>
 </body>
 </html>
