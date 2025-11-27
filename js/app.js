@@ -51,15 +51,15 @@ function setFonts(fonts) {
 // ============================================================================
 
 function renderHeader(header) {
-  return `<header class="bg-gradient-to-r from-blue-600 to-cyan-400 text-white sticky top-0 z-50 shadow-lg">
+  return `<header class="bg-gradient-to-r from-blue-600 to-cyan-400 text-white sticky top-0 z-50 shadow-lg relative">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
       <a href="/" class="logo flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition-opacity" onclick="navigate('/', event)">
         <span class="text-white font-bold text-lg">FTTG Solutions</span>
       </a>
-      <button class="menu-toggle md:hidden flex flex-col gap-1.5 bg-transparent border-none cursor-pointer" id="menuToggle">
-        <span class="w-6 h-0.5 bg-white rounded transition-all duration-300"></span>
-        <span class="w-6 h-0.5 bg-white rounded transition-all duration-300"></span>
-        <span class="w-6 h-0.5 bg-white rounded transition-all duration-300"></span>
+      <button class="menu-toggle md:hidden flex flex-col gap-1.5 bg-transparent border-none cursor-pointer p-2" id="menuToggle">
+        <span class="w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center"></span>
+        <span class="w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center"></span>
+        <span class="w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center"></span>
       </button>
       <nav class="hidden md:flex gap-8 items-center" id="navMenu">
         ${header.menu.map(item => {
@@ -68,7 +68,7 @@ function renderHeader(header) {
       </nav>
       ${header.cta_enabled ? `<a href="${header.cta_url}" class="hidden md:inline-block bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-2 rounded font-semibold transition-all" onclick="navigate('${header.cta_url}', event)">${header.cta_text}</a>` : ''}
     </div>
-    <nav class="hidden flex-col gap-0 bg-transparent max-h-0 overflow-hidden transition-all duration-300 pointer-events-none" id="mobileMenu">
+    <nav class="hidden flex-col gap-0 bg-black/25 max-h-0 overflow-hidden transition-all duration-300 pointer-events-none absolute w-full left-0 top-full" id="mobileMenu">
       ${header.menu.map(item => {
         return `<a href="${item.url}" class="menu-link block px-4 py-3 border-b border-white/30 hover:bg-white/10 transition-colors text-right pointer-events-auto" onclick="navigate('${item.url}', event)">${item.label}</a>`;
       }).join('')}
@@ -677,7 +677,7 @@ function openProjectModal(link, title) {
               <i class="bi bi-x text-3xl"></i>
             </button>
           </div>
-          <div class="flex-1 overflow-hidden">
+          <div class="flex-1 overflow-auto">
             <iframe id="projectIframe" src="" title="Project Preview" class="w-full h-full border-none" loading="lazy"></iframe>
           </div>
         </div>
@@ -793,10 +793,38 @@ function setupMobileMenu() {
   }
   
   menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-    mobileMenu.classList.toggle('max-h-96');
-    const isOpen = !mobileMenu.classList.contains('hidden');
-    console.log(`☰ Mobile menu ${isOpen ? 'opened' : 'closed'}`);
+    const spans = menuToggle.querySelectorAll('span');
+    const isOpen = mobileMenu.classList.contains('hidden');
+    
+    if (isOpen) {
+      // Opening animation
+      mobileMenu.classList.remove('hidden');
+      // Trigger reflow to ensure transition plays
+      void mobileMenu.offsetHeight;
+      mobileMenu.classList.remove('max-h-0', 'pointer-events-none');
+      mobileMenu.classList.add('max-h-96', 'pointer-events-auto');
+      
+      // Animate hamburger to X
+      spans[0].style.transform = 'rotate(45deg) translateY(11px)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'rotate(-45deg) translateY(-11px)';
+      console.log('📂 Mobile menu opening...');
+    } else {
+      // Closing animation
+      mobileMenu.classList.remove('max-h-96', 'pointer-events-auto');
+      mobileMenu.classList.add('max-h-0', 'pointer-events-none');
+      
+      // Reset hamburger icon
+      spans[0].style.transform = 'rotate(0) translateY(0)';
+      spans[1].style.opacity = '1';
+      spans[2].style.transform = 'rotate(0) translateY(0)';
+      
+      // Hide after transition
+      setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+      }, 300);
+      console.log('📁 Mobile menu closing...');
+    }
   });
   
   // Close menu when a link is clicked
@@ -804,8 +832,20 @@ function setupMobileMenu() {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       console.log(`🔗 Mobile menu link clicked: ${href}`);
-      mobileMenu.classList.add('hidden');
-      mobileMenu.classList.remove('max-h-96');
+      
+      // Trigger closing animation
+      mobileMenu.classList.remove('max-h-96', 'pointer-events-auto');
+      mobileMenu.classList.add('max-h-0', 'pointer-events-none');
+      
+      // Reset hamburger icon
+      const spans = menuToggle.querySelectorAll('span');
+      spans[0].style.transform = 'rotate(0) translateY(0)';
+      spans[1].style.opacity = '1';
+      spans[2].style.transform = 'rotate(0) translateY(0)';
+      
+      setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+      }, 300);
     });
   });
 }
