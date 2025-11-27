@@ -54,8 +54,7 @@ function renderHeader(header) {
   return `<header class="bg-gradient-to-r from-blue-600 to-cyan-400 text-white sticky top-0 z-50 shadow-lg">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
       <a href="#home" class="logo flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition-opacity">
-        <img src="${header.logo}" alt="Logo" class="h-14" onerror="this.nextElementSibling.style.display='block'">
-        <span class="text-white font-bold text-lg hidden">FTTG Solutions</span>
+        <span class="text-white font-bold text-lg">FTTG Solutions</span>
       </a>
       <button class="menu-toggle md:hidden flex flex-col gap-1.5 bg-transparent border-none cursor-pointer" id="menuToggle">
         <span class="w-6 h-0.5 bg-white rounded transition-all duration-300"></span>
@@ -149,9 +148,7 @@ function renderHome(page) {
             <a href="#services" class="border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded font-semibold transition-all inline-block text-center">Learn More</a>
           </div>
         </div>
-        <div class="hidden md:block">
-          <img src="https://via.placeholder.com/500x400?text=Software+Development" alt="Software Development" class="w-full h-auto" onerror="this.style.display='none'">
-        </div>
+        <div class="hidden md:block"></div>
       </div>
     </section>
     <section class="py-12 md:py-20">
@@ -424,7 +421,7 @@ function renderAbout(page) {
         <div class="flex flex-wrap justify-center gap-8">
           ${page.team.map(m => `
             <div class="w-full md:w-96 bg-white rounded-lg p-8 text-center shadow-md">
-              <img src="${m.image}" alt="${m.name}" class="w-56 h-56 rounded-full mx-auto mb-6 object-cover" style="object-position: center 20%;" onerror="this.src='https://via.placeholder.com/300x300?text=${encodeURIComponent(m.name)}'">
+              <img src="${m.image}" alt="${m.name}" class="w-56 h-56 rounded-full mx-auto mb-6 object-cover" style="object-position: center 20%;">
               <h3 class="text-2xl font-bold text-gray-900 mb-2">${m.name}</h3>
               <p class="text-cyan-400 font-semibold mb-4 text-lg">${m.role}</p>
               <p class="text-gray-600 text-base">${m.bio}</p>
@@ -460,7 +457,7 @@ function renderBlog(page) {
         <div class="lg:col-span-2">
           ${page.posts.map(post => `
             <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all mb-6">
-              <img src="${post.image}" alt="${post.title}" class="w-full h-64 object-cover" onerror="this.src='https://via.placeholder.com/600x400?text=${encodeURIComponent(post.title)}'">
+              <img src="${post.image}" alt="${post.title}" class="w-full h-64 object-cover bg-gray-300" onerror="this.style.display='none'">
               <div class="p-6">
                 <span class="bg-cyan-400 text-white px-3 py-1 rounded-full text-sm font-semibold">${post.category}</span>
                 <h2 class="text-2xl font-bold text-gray-900 mt-3 mb-2">${post.title}</h2>
