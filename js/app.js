@@ -41,6 +41,14 @@ async function fetchBlogData() {
 }
 
 // ============================================================================
+// SECTION 1B: FORM SERVICE
+// ============================================================================
+
+// FormService is loaded separately from js/services/FormService.js
+// Handles form submission and sends data to backend API
+let formService = null;
+
+// ============================================================================
 // SECTION 2: STYLING & DESIGN SYSTEM
 // ============================================================================
 
@@ -861,38 +869,6 @@ function setupServiceDropdown() {
   });
 }
 
-function setupContactServiceDropdown() {
-  const dropdown = document.getElementById('subject');
-  const customInput = document.getElementById('customSubject');
-  
-  if (!dropdown) {
-    console.warn('⚠️ Contact subject dropdown not found');
-    return;
-  }
-  
-  dropdown.addEventListener('change', (e) => {
-    console.log(`📋 Contact subject changed: ${e.target.value}`);
-    if (e.target.value === '__custom') {
-      customInput.classList.remove('hidden');
-      customInput.focus();
-    } else {
-      customInput.classList.add('hidden');
-      customInput.value = '';
-    }
-  });
-  
-  // Handle form submission to use custom value if entered
-  const form = document.getElementById('contactForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      if (dropdown.value === '__custom' && customInput.value.trim()) {
-        dropdown.value = customInput.value.trim();
-        console.log(`✅ Contact form submitted with custom subject: ${customInput.value}`);
-      }
-    });
-  }
-}
-
 function setupMobileMenu() {
   const menuToggle = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
@@ -980,6 +956,20 @@ async function initApp() {
   }
   
   route(appData);
+  
+  // Initialize FormService if FormService class is available
+  if (typeof FormService !== 'undefined') {
+    formService = new FormService({
+      formSelector: '#contactForm',
+      apiEndpoint: '/api/send-email'  // Update this to your backend endpoint
+    });
+    
+    // Initialize form service
+    await formService.init();
+    console.log('✅ FormService initialized');
+  } else {
+    console.warn('⚠️ FormService class not found. Make sure FormService.js is loaded.');
+  }
   
   // Listen for popstate (browser back/forward)
   window.addEventListener('popstate', () => {
