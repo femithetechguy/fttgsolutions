@@ -87,13 +87,6 @@ class FormService {
             this.showError(validation.error);
             return;
         }
-        
-        // Check if EmailJS is available
-        if (typeof emailjs === 'undefined') {
-            console.error('❌ EmailJS not available');
-            this.showError('Email service is loading. Please try again in a moment.');
-            return;
-        }
 
         // Mark as submitting and update button
         this.isSubmitting = true;
